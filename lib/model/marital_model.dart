@@ -25,6 +25,7 @@ class Marital {
     this.wifeBirthDate,
     this.wifeNationality,
     this.wifeReligion,
+    this.address,
     this.maritalAttachment,
     this.husbandAttachment,
     this.wifeAttachment,
@@ -47,6 +48,7 @@ class Marital {
   String wifeBirthDate;
   String wifeNationality;
   String wifeReligion;
+  String address;
   String maritalAttachment;
   String husbandAttachment;
   String wifeAttachment;
@@ -69,6 +71,7 @@ class Marital {
     wifeBirthPlace: json["wife_birth_place"],
     wifeNationality: json["wife_nationality"],
     wifeReligion: json["wife_religion"],
+    address: json["address"],
     maritalAttachment: json["marital_attachment"],
     husbandAttachment: json["husband_marital_attachment"],
     wifeAttachment: json["wife_marital_attachment"],
@@ -92,6 +95,7 @@ class Marital {
     "wifeBirthPlace": wifeBirthPlace,
     "wifeNationality": wifeNationality,
     "wifeReligion": wifeReligion,
+    "address": address,
     "maritalAttachment": maritalAttachment,
     "husbandAttachment": husbandAttachment,
     "wifeAttachment": wifeAttachment,

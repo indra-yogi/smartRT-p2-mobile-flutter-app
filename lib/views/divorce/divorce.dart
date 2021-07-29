@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:p2_mobile_app/controller/divorce_controller.dart';
+import 'package:p2_mobile_app/views/divorce/detail_divorce.dart';
 
 class DivorcePage extends StatelessWidget {
   final DivorceController _controller = Get.put(DivorceController());
@@ -54,7 +55,11 @@ class DivorcePage extends StatelessWidget {
             return DataRow(cells: [
               DataCell(Container(child: Text(x),)),
               DataCell(Container(child: Text(y),)),
-              DataCell(Container(child: Text("Detail"),)),
+              DataCell(
+                InkWell(
+                  onTap: () {
+                    Get.to(() => DetailDivorcePage(_controller.divorceList[index]));
+                  },child: Text("Detail"),)),
             ]);
           }),
           );

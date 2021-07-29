@@ -23,13 +23,4 @@ class LoginController extends GetxController {
     }
     return error;
   }
-
-  Future<bool> refresh() async {
-    final prefs = await SharedPreferences.getInstance();
-    String token = prefs.getString("token");
-
-    if(token == null) {
-      return false;
-    }
-  }
 }

@@ -9,11 +9,15 @@ const urlRegister = urlBase + 'auth/register';
 const urlAddDivorce = urlBase + 'divorce/store';
 const urlShowDivorce = urlBase + 'divorce/show/{id}';
 const urlIndexDivorce = urlBase + 'divorce/getAll';
+const urlValidateDivorce = urlBase + 'divorce/index';
 const urlEditDivorce = urlBase + 'divorce/update/{id}';
 const urlDeleteDivorce = urlBase + 'divorce/delete/{id}';
+const urlUpdateStatusDivorce = urlBase + 'divorce/statusUpdate/{id}';
 //marital url
 const urlAddMarital = urlBase + 'marital/store';
 const urlShowMarital = urlBase + 'marital/show/{id}';
 const urlIndexMarital = urlBase + 'marital/getAll';
-const urlEditMarital = urlBase + 'marital/update/{id}';
+const urlValidateMarital = urlBase + 'marital/index';
+const urlEditMarital = urlBase + 'marital/update/';
 const urlDeleteMarital = urlBase + 'marital/delete/{id}';
+const urlUpdateStatusMarital = urlBase + 'marital/statusUpdate/{id}';

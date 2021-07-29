@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:p2_mobile_app/controller/marital_controller.dart';
-import 'package:p2_mobile_app/views/home/home.dart';
+import 'package:p2_mobile_app/views/marital/detail_marital.dart';
 
 class MaritalPage extends StatelessWidget {
   final MaritalController _controller = Get.put(MaritalController());
@@ -32,7 +32,7 @@ class MaritalPage extends StatelessWidget {
               ),
             DataColumn(
               label: Text(
-                "No. Akta Perceraian",
+                "No. Akta Perkawinan",
                 style: TextStyle(
                   fontWeight: FontWeight.bold
                 ),
@@ -55,7 +55,7 @@ class MaritalPage extends StatelessWidget {
             return DataRow(cells: [
               DataCell(Container(child: Text(x),)),
               DataCell(Container(child: Text(y),)),
-              DataCell(Container(child: InkWell(onTap: () {Get.to(() => Home());}, child: Text("Detail"),),),),
+              DataCell(Container(child: InkWell(onTap: () {Get.to(() => DetailMaritalPage(_controller.maritalList[index]),);}, child: Text("Detail"),),),),
             ]);
           }),
           );

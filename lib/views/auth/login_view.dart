@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:p2_mobile_app/controller/auth/login_controller.dart';
 import 'package:p2_mobile_app/views/home/home.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -83,35 +84,86 @@ class _LoginPageState extends State<LoginPage> {
                         color: controller.loginProcess.value
                             ? Theme.of(context).disabledColor
                             : Theme.of(context).primaryColor,
-                        child: MaterialButton(
-                          minWidth: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-                          onPressed: () async {
-                            if(_formKey.currentState.validate()) {
-                              String error = await controller.login(
-                                nik: _nikTextController.text,
-                                password: _passwordTextController.text
-                              );
-                              if (error != "") {
-                              Get.defaultDialog(
-                                title: "Oops!",
-                                middleText: error
-                              );
-                              } else {
-                                Get.to(() => Home());
+                        child: Column(
+                          children: [
+                            MaterialButton(
+                              minWidth: MediaQuery.of(context).size.width,
+                              padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                              onPressed: () async {
+                                if(_formKey.currentState.validate()) {
+                                  String error = await controller.login(
+                                    nik: _nikTextController.text,
+                                    password: _passwordTextController.text
+                                  );
+                                if (error != "") {
+                                  Get.defaultDialog(
+                                    title: "Oops!",
+                                    middleText: error
+                                  );
+                                } else {
+                                  Get.to(() => Home());
+                                }
                               }
-                            }
-                          },
-                          child: Text(
-                            "Login",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                            },
+                            child: Text(
+                              "Login",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        ),
-                      ),
+                        ],
+                      ) 
+                    ),
+                    SizedBox(height: 8,),
+                    Material(
+                        elevation: 5.0,
+                        borderRadius: BorderRadius.circular(30),
+                        color: controller.loginProcess.value
+                            ? Theme.of(context).disabledColor
+                            : Colors.white,
+                        child: Column(
+                          children: [
+                            MaterialButton(
+                              minWidth: MediaQuery.of(context).size.width,
+                              padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                              onPressed: () async {
+                                if(_formKey.currentState.validate()) {
+                                  String error = await controller.login(
+                                    nik: _nikTextController.text,
+                                    password: _passwordTextController.text
+                                  );
+                                if (error != "") {
+                                  Get.defaultDialog(
+                                    title: "Oops!",
+                                    middleText: error
+                                  );
+                                } else {
+                                  Get.offAll(() => Home());
+                                }
+                              }
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Login with Google",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(width: 12),
+                                Icon(FontAwesomeIcons.google)
+                              ],
+                            ),
+                          ),
+                        ],
+                      ) 
+                    ),
                     ],
                   ),
                 ),
