@@ -1,31 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:p2_mobile_app/controller/marital_controller.dart';
-import 'package:p2_mobile_app/views/marital/add_marital.dart';
-import 'package:p2_mobile_app/views/marital/detail_marital.dart';
+import 'package:p2_mobile_app/views/validation/val_detail_marital.dart';
 
-class MaritalPage extends StatelessWidget {
+class ValidateMaritalPage extends StatelessWidget {
   final MaritalController _controller = Get.put(MaritalController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Data Perkawinan"),
+        title: Text("Validasi Data Perkawinan"),
         centerTitle: true,
         backgroundColor: Colors.blueAccent,
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: GestureDetector(
-              onTap: () {Get.to(() => AddDataMarital());},
-              child: Icon(
-                FontAwesomeIcons.plusCircle
-              ),
-            ),
-          )
-        ],
       ),
       body: Obx(() {
         if (_controller.isLoading.value) {
@@ -61,14 +48,14 @@ class MaritalPage extends StatelessWidget {
               ),
             
           ], 
-          rows: List.generate(_controller.maritalList.length, (index) {
-            final x = _controller.maritalList[index].husbandName;
-            final y = _controller.maritalList[index].maritalNumber;
+          rows: List.generate(_controller.maritalVList.length, (index) {
+            final x = _controller.maritalVList[index].husbandName;
+            final y = _controller.maritalVList[index].maritalNumber;
 
             return DataRow(cells: [
               DataCell(Container(child: Text(x),)),
               DataCell(Container(child: Text(y),)),
-              DataCell(Container(child: InkWell(onTap: () {Get.to(() => DetailMaritalPage(_controller.maritalList[index]),);}, child: Text("Detail"),),),),
+              DataCell(Container(child: InkWell(onTap: () {Get.to(() => ValidateDetailMaritalPage(_controller.maritalVList[index]),);}, child: Text("Detail"),),),),
             ]);
           }),
           );

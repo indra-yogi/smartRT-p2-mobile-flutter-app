@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:p2_mobile_app/controller/divorce_controller.dart';
+import 'package:p2_mobile_app/views/divorce/add_divorce.dart';
 import 'package:p2_mobile_app/views/divorce/detail_divorce.dart';
 
 class DivorcePage extends StatelessWidget {
@@ -13,6 +15,17 @@ class DivorcePage extends StatelessWidget {
         title: Text("Data Perceraian"),
         centerTitle: true,
         backgroundColor: Colors.blueAccent,
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: GestureDetector(
+              onTap: () {Get.to(() => AddDataDivorce());},
+              child: Icon(
+                FontAwesomeIcons.plusCircle
+              ),
+            ),
+          )
+        ],
       ),
       body: Obx(() {
         if (_controller.isLoading.value) {

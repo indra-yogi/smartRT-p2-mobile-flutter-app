@@ -40,7 +40,7 @@ class User {
   String neighbourhood;
   String position;
   String avatar;
-  int roleId;
+  String roleId;
   String googleId;
 
   factory User.fromJson(Map<String, dynamic> json) => User(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:p2_mobile_app/model/divorce_model.dart';
 
 class DetailDivorcePage extends StatefulWidget {

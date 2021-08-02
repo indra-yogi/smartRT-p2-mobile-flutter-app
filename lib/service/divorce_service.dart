@@ -15,4 +15,15 @@ class DivorceService {
       return null;
     }
   }
+
+  static Future<List<Divorce>> getValidateDivorce() async {
+    var response = await client.get(Uri.parse(urlValidateDivorce));
+
+    if (response.statusCode == 200) {
+      var data = response.body;
+      return divorceFromJson(data);
+    } else {
+      return null;
+    }
+  }
 }

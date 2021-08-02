@@ -6,6 +6,8 @@ class MaritalController extends GetxController {
   var isLoading = true.obs;
   // ignore: deprecated_member_use
   var maritalList = List<Marital>().obs;
+  // ignore: deprecated_member_use
+  var maritalVList = List<Marital>().obs;
   var selectedMarital = Marital().obs;
   Marital marital;
   
@@ -14,6 +16,7 @@ class MaritalController extends GetxController {
   void onInit() {
     fetchMarital();
     fetchMaritalDetail(marital);
+    fetchValidateMarital();
     super.onInit();
   }
 
@@ -23,6 +26,18 @@ class MaritalController extends GetxController {
       var marital = await MaritalService.getMarital();
       if (marital != null) {
         maritalList.value = marital;
+      }
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  void fetchValidateMarital() async {
+    isLoading(true);
+    try {
+      var marital = await MaritalService.getValidateMarital();
+      if (marital != null) {
+        maritalVList.value = marital;
       }
     } finally {
       isLoading(false);

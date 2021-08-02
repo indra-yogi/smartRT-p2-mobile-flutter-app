@@ -1,30 +1,38 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-//import 'package:get/get.dart';
-//import 'package:p2_mobile_app/controller/marital_controller.dart';
-import 'package:p2_mobile_app/model/marital_model.dart';
-import 'package:p2_mobile_app/service/user_service.dart';
+import 'package:get/get.dart';
+import 'package:p2_mobile_app/model/divorce_model.dart';
+import 'package:p2_mobile_app/views/home/home.dart';
 
-class DetailMaritalPage extends StatefulWidget {
-  DetailMaritalPage(this.marital);
+class ValidateDetailDivorcePage extends StatefulWidget {
+  ValidateDetailDivorcePage(this.divorce);
 
-  final Marital marital;
-  final userId = UserService().getToken();
+  final Divorce divorce;
 
   @override
   _DetailMaritalState createState() => _DetailMaritalState();
 }
 
-class _DetailMaritalState extends State<DetailMaritalPage> {
+class _DetailMaritalState extends State<ValidateDetailDivorcePage> {
   _DetailMaritalState();
 
-  //final MaritalController _controller = Get.put(MaritalController());
+  Future validate() async {
+      Dio client = new Dio();
+
+      final divorceId = widget.divorce.id;
+      final response = await client.put(
+        "http://10.0.2.2:8000/api/divorce/statusUpdate/$divorceId",
+      );
+      print(response);
+      Get.to(() => Home());
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
-        title: Text( widget.marital.husbandName ),
+        title: Text( widget.divorce.name ),
         centerTitle: true,
         ),
       body: SingleChildScrollView(
@@ -38,6 +46,13 @@ class _DetailMaritalState extends State<DetailMaritalPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
+                    "No. Akta Perceraian :",
+                    style: TextStyle(
+                      fontSize: 16
+                    ),
+                  ),
+                  SizedBox(height: 18,),
+                  Text(
                     "No. Akta Perkawinan :",
                     style: TextStyle(
                       fontSize: 16
@@ -45,105 +60,56 @@ class _DetailMaritalState extends State<DetailMaritalPage> {
                   ),
                   SizedBox(height: 18,),
                   Text(
-                    "Tempat Perkawinan :",
+                    "No. Serial Perceraian :",
                     style: TextStyle(
                       fontSize: 16
                     ),
                   ),
                   SizedBox(height: 18,),
                   Text(
-                    "Tanggal Perkawinan :",
+                    "Tempat Perceraian :",
                     style: TextStyle(
                       fontSize: 16
                     ),
                   ),
                   SizedBox(height: 18,),
                   Text(
-                    "No. Serial Perkawinan :",
+                    "Tanggal Perceraian :",
                     style: TextStyle(
                       fontSize: 16
                     ),
                   ),
                   SizedBox(height: 18,),
                   Text(
-                    "Nama Suami :",
+                    "Nama :",
                     style: TextStyle(
                       fontSize: 16
                     ),
                   ),
                   SizedBox(height: 18,),
                   Text(
-                    "NIK Suami :",
+                    "NIK :",
                     style: TextStyle(
                       fontSize: 16
                     ),
                   ),
                   SizedBox(height: 18,),
                   Text(
-                    "Tempat Lahir Suami :",
+                    "Tempat Lahir :",
                     style: TextStyle(
                       fontSize: 16
                     ),
                   ),
                   SizedBox(height: 18,),
                   Text(
-                    "Tanggal Lahir Suami :",
+                    "Tanggal Lahir :",
                     style: TextStyle(
                       fontSize: 16
                     ),
                   ),
                   SizedBox(height: 18,),
                   Text(
-                    "Kewarganegaraan Suami :",
-                    style: TextStyle(
-                      fontSize: 16
-                    ),
-                  ),
-                  SizedBox(height: 18,),
-                  Text(
-                    "Agama Suami :",
-                    style: TextStyle(
-                      fontSize: 16
-                    ),
-                  ),
-                  SizedBox(height: 18,),
-                  Text(
-                    "Nama Istri :",
-                    style: TextStyle(
-                      fontSize: 16
-                    ),
-                  ),
-                  SizedBox(height: 18,),
-                  Text(
-                    "NIK Istri :",
-                    style: TextStyle(
-                      fontSize: 16
-                    ),
-                  ),
-                  SizedBox(height: 18,),
-                  Text(
-                    "Tempat Lahir Istri :",
-                    style: TextStyle(
-                      fontSize: 16
-                    ),
-                  ),
-                  SizedBox(height: 18,),
-                  Text(
-                    "Tanggal Lahir Istri :",
-                    style: TextStyle(
-                      fontSize: 16
-                    ),
-                  ),
-                  SizedBox(height: 18,),
-                  Text(
-                    "Kewarganegaraan Istri :",
-                    style: TextStyle(
-                      fontSize: 16
-                    ),
-                  ),
-                  SizedBox(height: 18,),
-                  Text(
-                    "Agama Istri :",
+                    "Agama :",
                     style: TextStyle(
                       fontSize: 16
                     ),
@@ -157,129 +123,91 @@ class _DetailMaritalState extends State<DetailMaritalPage> {
                   ),
                 ],  
               ),
-              SizedBox(width: 10,),
+              SizedBox(width: 10),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.marital.maritalNumber,
+                    widget.divorce.divorceNumber,
                     style: TextStyle(
                       fontSize: 16
                     ),
                   ),
                   SizedBox(height: 18,),
                   Text(
-                    widget.marital.marriedPlace,
+                    widget.divorce.maritalNumber,
                     style: TextStyle(
                       fontSize: 16
                     ),
                   ),
                   SizedBox(height: 18,),
                   Text(
-                    widget.marital.marriedDate,
+                    widget.divorce.divorceSerial,
                     style: TextStyle(
                       fontSize: 16
                     ),
                   ),
                   SizedBox(height: 18,),
                   Text(
-                    widget.marital.maritalSerial,
+                    widget.divorce.divorcePlace,
                     style: TextStyle(
                       fontSize: 16
                     ),
                   ),
                   SizedBox(height: 18,),
                   Text(
-                    widget.marital.husbandName,
+                    widget.divorce.divorceDate,
                     style: TextStyle(
                       fontSize: 16
                     ),
                   ),
                   SizedBox(height: 18,),
                   Text(
-                    widget.marital.husbandNik,
+                    widget.divorce.name,
                     style: TextStyle(
                       fontSize: 16
                     ),
                   ),
                   SizedBox(height: 18,),
                   Text(
-                    widget.marital.husbandBirthPlace,
+                    widget.divorce.nik,
                     style: TextStyle(
                       fontSize: 16
                     ),
                   ),
                   SizedBox(height: 18,),
                   Text(
-                    widget.marital.husbandBirthDate,
+                    widget.divorce.birthPlace,
                     style: TextStyle(
                       fontSize: 16
                     ),
                   ),
                   SizedBox(height: 18,),
                   Text(
-                    widget.marital.husbandNationality,
+                    widget.divorce.birthDate,
                     style: TextStyle(
                       fontSize: 16
                     ),
                   ),
                   SizedBox(height: 18,),
                   Text(
-                    widget.marital.husbandReligion,
+                    widget.divorce.religion,
                     style: TextStyle(
                       fontSize: 16
                     ),
                   ),
                   SizedBox(height: 18,),
                   Text(
-                    widget.marital.wifeName,
+                    widget.divorce.address,
                     style: TextStyle(
                       fontSize: 16
                     ),
                   ),
                   SizedBox(height: 18,),
-                  Text(
-                    widget.marital.wifeNik,
-                    style: TextStyle(
-                      fontSize: 16
-                    ),
-                  ),
-                  SizedBox(height: 18,),
-                  Text(
-                    widget.marital.wifeBirthPlace,
-                    style: TextStyle(
-                      fontSize: 16
-                    ),
-                  ),
-                  SizedBox(height: 18,),
-                  Text(
-                    widget.marital.wifeBirthDate,
-                    style: TextStyle(
-                      fontSize: 16
-                    ),
-                  ),
-                  SizedBox(height: 18,),
-                  Text(
-                    widget.marital.wifeNationality,
-                    style: TextStyle(
-                      fontSize: 16
-                    ),
-                  ),
-                  SizedBox(height: 18,),
-                  Text(
-                    widget.marital.wifeReligion,
-                    style: TextStyle(
-                      fontSize: 16
-                    ),
-                  ),
-                  SizedBox(height: 18,),
-                  Text(
-                    widget.marital.address,
-                    style: TextStyle(
-                      fontSize: 16
-                    ),
-                  ),
+                  ElevatedButton(onPressed: () {
+                    validate();
+                  }, child: Text('Validasi'))
                 ],  
               ),
             ],

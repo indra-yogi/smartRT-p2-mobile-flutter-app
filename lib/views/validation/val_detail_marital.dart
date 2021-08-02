@@ -1,23 +1,36 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 //import 'package:get/get.dart';
 //import 'package:p2_mobile_app/controller/marital_controller.dart';
 import 'package:p2_mobile_app/model/marital_model.dart';
 import 'package:p2_mobile_app/service/user_service.dart';
+import 'package:p2_mobile_app/views/home/home.dart';
 
-class DetailMaritalPage extends StatefulWidget {
-  DetailMaritalPage(this.marital);
+class ValidateDetailMaritalPage extends StatefulWidget {
+  ValidateDetailMaritalPage(this.marital);
 
   final Marital marital;
-  final userId = UserService().getToken();
+  final userId = UserService().getUserDetail();
 
   @override
   _DetailMaritalState createState() => _DetailMaritalState();
 }
 
-class _DetailMaritalState extends State<DetailMaritalPage> {
+class _DetailMaritalState extends State<ValidateDetailMaritalPage> {
   _DetailMaritalState();
 
   //final MaritalController _controller = Get.put(MaritalController());
+  Future validate() async {
+      Dio client = new Dio();
+
+      final maritalId = widget.marital.id;
+      final response = await client.put(
+        "http://10.0.2.2:8000/api/marital/statusUpdate/$maritalId",
+      );
+      print(response);
+      Get.to(() => Home());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -280,6 +293,10 @@ class _DetailMaritalState extends State<DetailMaritalPage> {
                       fontSize: 16
                     ),
                   ),
+                  SizedBox(height: 18,),
+                  ElevatedButton(onPressed: () {
+                    validate();
+                  }, child: Text('Validasi'))
                 ],  
               ),
             ],

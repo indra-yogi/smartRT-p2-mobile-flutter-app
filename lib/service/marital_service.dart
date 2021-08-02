@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'dart:async';
 
@@ -12,6 +11,17 @@ class MaritalService {
 
   static Future<List<Marital>> getMarital() async {
     var response = await client.get(Uri.parse(urlIndexMarital));
+
+    if (response.statusCode == 200) {
+      var data = response.body;
+      return maritalFromJson(data);
+    } else {
+      return null;
+    }
+  }
+
+  static Future<List<Marital>> getValidateMarital() async {
+    var response = await client.get(Uri.parse(urlValidateMarital));
 
     if (response.statusCode == 200) {
       var data = response.body;
@@ -41,11 +51,9 @@ class MaritalService {
       'wifeBirthPlace': marital.wifeBirthPlace,
       'wifeNationality': marital.wifeNationality,
       'wifeReligion': marital.wifeReligion,
-      'maritalAttachment': marital.maritalAttachment,
-      'husbandAttachment': marital.husbandAttachment,
-      'wifeAttachment': marital.wifeAttachment,
+      'address': marital.address,
     };
-
+    
     var response = await client.post(Uri.parse(urlAddMarital),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',

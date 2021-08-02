@@ -1,31 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:p2_mobile_app/controller/marital_controller.dart';
-import 'package:p2_mobile_app/views/marital/add_marital.dart';
-import 'package:p2_mobile_app/views/marital/detail_marital.dart';
+import 'package:p2_mobile_app/controller/divorce_controller.dart';
+import 'package:p2_mobile_app/views/validation/val_detail_divorce.dart';
 
-class MaritalPage extends StatelessWidget {
-  final MaritalController _controller = Get.put(MaritalController());
+class ValidateDivorcePage extends StatelessWidget {
+  final DivorceController _controller = Get.put(DivorceController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Data Perkawinan"),
+        title: Text("Validasi Data Perceraian"),
         centerTitle: true,
         backgroundColor: Colors.blueAccent,
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: GestureDetector(
-              onTap: () {Get.to(() => AddDataMarital());},
-              child: Icon(
-                FontAwesomeIcons.plusCircle
-              ),
-            ),
-          )
-        ],
       ),
       body: Obx(() {
         if (_controller.isLoading.value) {
@@ -37,7 +24,7 @@ class MaritalPage extends StatelessWidget {
           columns: [
             DataColumn(
               label: Text(
-                "Name",
+                "Nama",
                 style: TextStyle(
                   fontWeight: FontWeight.bold
                 ),
@@ -45,7 +32,7 @@ class MaritalPage extends StatelessWidget {
               ),
             DataColumn(
               label: Text(
-                "No. Akta Perkawinan",
+                "No. Akta Perceraian",
                 style: TextStyle(
                   fontWeight: FontWeight.bold
                 ),
@@ -61,14 +48,18 @@ class MaritalPage extends StatelessWidget {
               ),
             
           ], 
-          rows: List.generate(_controller.maritalList.length, (index) {
-            final x = _controller.maritalList[index].husbandName;
-            final y = _controller.maritalList[index].maritalNumber;
+          rows: List.generate(_controller.divorceVList.length, (index) {
+            final x = _controller.divorceVList[index].name;
+            final y = _controller.divorceVList[index].divorceNumber;
 
             return DataRow(cells: [
               DataCell(Container(child: Text(x),)),
               DataCell(Container(child: Text(y),)),
-              DataCell(Container(child: InkWell(onTap: () {Get.to(() => DetailMaritalPage(_controller.maritalList[index]),);}, child: Text("Detail"),),),),
+              DataCell(
+                InkWell(
+                  onTap: () {
+                    Get.to(() => ValidateDetailDivorcePage(_controller.divorceVList[index]));
+                  },child: Text("Detail"),)),
             ]);
           }),
           );

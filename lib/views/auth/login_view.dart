@@ -141,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                                     middleText: error
                                   );
                                 } else {
-                                  Get.offAll(() => Home());
+                                  Get.off(() => Home());
                                 }
                               }
                             },
