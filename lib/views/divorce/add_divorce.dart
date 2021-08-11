@@ -327,7 +327,7 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
                       _birthPlaceCtrl.text, 
                       _religionCtrl.text,  
                       _addressCtrl.text, 
-                      _image, 
+                      _image,
                     );
                     Get.to(() => Home());
                     setState(() {

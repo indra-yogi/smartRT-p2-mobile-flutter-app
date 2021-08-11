@@ -21,3 +21,9 @@ const urlValidateMarital = urlBase + 'marital/index';
 const urlEditMarital = urlBase + 'marital/update/';
 const urlDeleteMarital = urlBase + 'marital/delete/{id}';
 const urlUpdateStatusMarital = urlBase + 'marital/statusUpdate/{id}';
+//location url
+const urlGetNeighbourhood = urlBase + 'location?type=neighbourhood&villageId={id}';
+const urlGetVillage = urlBase + 'location?type=village&districtId={id}';
+const urlGetDistrict = urlBase + 'location?type=district&cityId={id}';
+const urlGetCity = urlBase + 'location?type=city&provinceId={id}';
+const urlGetProvince = urlBase + 'location?type=province';

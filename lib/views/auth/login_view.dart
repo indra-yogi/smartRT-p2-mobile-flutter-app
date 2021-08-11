@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:p2_mobile_app/controller/auth/login_controller.dart';
+import 'package:p2_mobile_app/views/auth/register_view.dart';
 import 'package:p2_mobile_app/views/home/home.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -157,13 +158,21 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                                 SizedBox(width: 12),
-                                Icon(FontAwesomeIcons.google)
+                                Icon(FontAwesomeIcons.google),
                               ],
                             ),
                           ),
                         ],
                       ) 
                     ),
+                    TextButton(
+                            onPressed: () async {
+                              Get.to(() => Register());
+                            }, 
+                            child: Text("Don't have an account? Register here", style: TextStyle(
+                              fontSize: 14.0,
+                            ),),
+                          )
                     ],
                   ),
                 ),

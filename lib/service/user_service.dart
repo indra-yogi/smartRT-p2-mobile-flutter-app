@@ -46,7 +46,7 @@ class UserService {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
+        'Authorization': token,
       }
     );
 
@@ -55,6 +55,33 @@ class UserService {
       return User.fromJson(json.decode(data));
     } else {
       return null;
+    }
+  }
+
+  Future<User> addUser(User user) async {
+
+    Map data = {
+      'name': user.name,
+      'phone': user.phone,
+      'email': user.email,
+      'nik': user.nik,
+      'password': user.password,
+      'address': user.address,
+      'neighbourhood': user.neighbourhood,
+      'position': user.position,
+    };
+
+    var response = await client.post(Uri.parse(urlRegister),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(data),
+    );
+
+    if (response.statusCode == 200) {
+      return User.fromJson(json.decode(response.body));
+    } else {
+      throw Exception ('Failed to Create User');
     }
   }
 

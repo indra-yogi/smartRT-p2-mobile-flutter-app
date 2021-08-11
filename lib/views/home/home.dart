@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:p2_mobile_app/model/user_model.dart';
 import 'package:p2_mobile_app/service/user_service.dart';
 import 'package:p2_mobile_app/views/auth/login_view.dart';
 import 'package:p2_mobile_app/views/divorce/divorce.dart';
 import 'package:p2_mobile_app/views/marital/marital.dart';
+import 'package:p2_mobile_app/views/statistic/statistic.dart';
 import 'package:p2_mobile_app/views/validation/validation_divorce.dart';
 import 'package:p2_mobile_app/views/validation/validation_marital.dart';
 
@@ -17,6 +19,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   final user = UserService().getUserDetail();
+  final token = UserService().getToken();
+  Future<User> selectedUser = UserService().getUserDetail();
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +88,25 @@ class _HomeState extends State<Home> {
                     Icon(Icons.exit_to_app),
                     SizedBox(height: 8,),
                     Text("Logout")
+                  ],
+                ),
+              ),
+            )
+          ),
+          Padding(
+            padding: EdgeInsets.all(5.0),
+            child: InkWell(
+              onTap: () {
+                Get.to(() => StatisticPage());
+              },
+              child: Card(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.pie_chart),
+                    SizedBox(height: 8,),
+                    Text("Statistics")
                   ],
                 ),
               ),

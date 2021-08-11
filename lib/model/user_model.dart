@@ -15,10 +15,6 @@ class User {
     this.password,
     this.phone,
     this.address,
-    this.village,
-    this.district,
-    this.city,
-    this.province,
     this.neighbourhood,
     this.position,
     this.avatar,
@@ -33,11 +29,7 @@ class User {
   String password;
   String phone;
   String address;
-  String village;
-  String district;
-  String city;
-  String province;
-  String neighbourhood;
+  int neighbourhood;
   String position;
   String avatar;
   String roleId;
@@ -51,11 +43,7 @@ class User {
     password: json["password"],
     phone: json["phone"],
     address: json["address"],
-    village: json["village"],
-    district: json["district"],
-    city: json["city"],
-    province: json["province"],
-    neighbourhood: json["neighourhood"],
+    neighbourhood: json["neighourhood_id"],
     position: json["position"],
     avatar: json["avatar"],
     roleId: json["role_id"],
@@ -70,10 +58,6 @@ class User {
     "password": password,
     "phone": phone,
     "address": address,
-    "village": village,
-    "district": district,
-    "city":city,
-    "province": province,
     "neighbourhood": neighbourhood,
     "position": position,
     "roleId": roleId,
