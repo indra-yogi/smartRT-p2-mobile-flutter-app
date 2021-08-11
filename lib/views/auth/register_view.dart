@@ -276,12 +276,12 @@ class _RegisterState extends State<Register> {
                 DropdownButton<int>(
                   hint: Text("Pilih Provinsi"),
                   value: _valProvince,
-                  items: _dataProvince.map((item) {
+                  items: _dataProvince?.map((item) {
                     return DropdownMenuItem(
                       child: Text(item.name),
                       value: item.id,
                     );
-                  }).toList(),
+                  })?.toList(),
                   onChanged: (value) {
                     setState(() {
                       _valProvince = value;

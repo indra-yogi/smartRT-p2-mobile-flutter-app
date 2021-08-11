@@ -6,21 +6,17 @@ const urlLogin = urlBase + 'auth/login';
 const urlLogout = urlBase + 'auth/logout';
 const urlRegister = urlBase + 'auth/register';
 //divorce url
-const urlAddDivorce = urlBase + 'divorce/store';
-const urlShowDivorce = urlBase + 'divorce/show/{id}';
-const urlIndexDivorce = urlBase + 'divorce/getAll';
-const urlValidateDivorce = urlBase + 'divorce/index';
-const urlEditDivorce = urlBase + 'divorce/update/{id}';
-const urlDeleteDivorce = urlBase + 'divorce/delete/{id}';
-const urlUpdateStatusDivorce = urlBase + 'divorce/statusUpdate/{id}';
+const urlDivorce = urlBase + 'divorce';
+const urlShowDivorce = urlBase + 'divorce/{id}';
+const urlSetStatusDivorceApproved = urlBase + 'divorce/set/{id}/APPROVED';
+const urlSetStatusDivorceWaiting = urlBase + 'divorce/set/{id}/WAITING';
+const urlSetStatusDivorceRejected = urlBase + 'divorce/set/{id}/REJECTED';
 //marital url
-const urlAddMarital = urlBase + 'marital/store';
-const urlShowMarital = urlBase + 'marital/show/{id}';
-const urlIndexMarital = urlBase + 'marital/getAll';
-const urlValidateMarital = urlBase + 'marital/index';
-const urlEditMarital = urlBase + 'marital/update/';
-const urlDeleteMarital = urlBase + 'marital/delete/{id}';
-const urlUpdateStatusMarital = urlBase + 'marital/statusUpdate/{id}';
+const urlMarital = urlBase + 'marital';
+const urlShowMarital = urlBase + 'marital/{id}';
+const urlSetStatusMaritalApproved = urlBase + 'marital/set/{id}/APPROVED';
+const urlSetStatusMaritalWaiting = urlBase + 'marital/set/{id}/WAITING';
+const urlSetStatusMaritalRejected = urlBase + 'marital/set/{id}/REJECTED';
 //location url
 const urlGetNeighbourhood = urlBase + 'location?type=neighbourhood&villageId={id}';
 const urlGetVillage = urlBase + 'location?type=village&districtId={id}';

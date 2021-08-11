@@ -21,7 +21,8 @@ class _DetailMaritalState extends State<DetailDivorcePage> {
         title: Text( widget.divorce.name ),
         centerTitle: true,
         ),
-      body: SingleChildScrollView(
+      body: InteractiveViewer(
+        constrained: false,
         child: Padding(
           padding: EdgeInsets.all(20),
           child: Row(

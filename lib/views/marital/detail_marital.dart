@@ -27,7 +27,8 @@ class _DetailMaritalState extends State<DetailMaritalPage> {
         title: Text( widget.marital.husbandName ),
         centerTitle: true,
         ),
-      body: SingleChildScrollView(
+      body: InteractiveViewer(
+        constrained: false,
         child: Padding(
           padding: EdgeInsets.all(20),
           child: Row(

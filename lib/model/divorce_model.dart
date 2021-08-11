@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 List<Divorce> divorceFromJson(String str) =>
-    List<Divorce>.from(json.decode(str).map((x) => Divorce.fromJson(x)));
+    List<Divorce>.from(json.decode(str)['record'].map((x) => Divorce.fromJson(x)));
 
 String divorceToJson(List<Divorce> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));

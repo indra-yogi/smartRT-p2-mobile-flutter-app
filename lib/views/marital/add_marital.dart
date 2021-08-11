@@ -3,6 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:p2_mobile_app/http/url.dart';
+import 'package:p2_mobile_app/model/location/city_model.dart';
+import 'package:p2_mobile_app/model/location/district_model.dart';
+import 'package:p2_mobile_app/model/location/neighbourhood_model.dart';
+import 'package:p2_mobile_app/model/location/province_model.dart';
+import 'package:p2_mobile_app/model/location/village_model.dart';
 import 'package:p2_mobile_app/service/marital_service.dart';
 import 'package:p2_mobile_app/service/user_service.dart';
 import 'package:http/http.dart' as http;
@@ -19,6 +25,18 @@ class AddDataMarital extends StatefulWidget {
 
 class _AddDataMaritalState extends State<AddDataMarital> {
   _AddDataMaritalState();
+  int _valProvince; 
+  int _valCity; 
+  int _valDistrict;
+  int _valVillage;
+  int _valNeighbourhood;
+
+  // ignore: deprecated_member_use
+  List<Province> _dataProvince;
+  List<City> _dataCity;
+  List<District> _dataDistrict;
+  List<Village> _dataVillage;
+  List<Neighbourhood> _dataNeighbourhood;
 
   var client = http.Client();
   final picker = ImagePicker();
@@ -112,6 +130,51 @@ class _AddDataMaritalState extends State<AddDataMarital> {
         });
   }
 
+  void getProvince() async {
+    final response = await http.get(Uri.parse(urlGetProvince));
+    var listData = provinceFromJson(response.body);
+    setState(() {
+      _dataProvince = listData;
+    });
+    print("data : $listData");
+  }
+
+  void getCity(int id) async {
+    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=city&provinceId=$id"));
+    var listData = cityFromJson(response.body);
+    setState(() {
+      _dataCity = listData;      
+    });
+    print("data : $listData");
+  }
+
+  void getDistrict(int id) async {
+    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=district&cityId=$id"));
+    var listData = districtFromJson(response.body);
+    setState(() {
+      _dataDistrict = listData;      
+    });
+    print("data : $listData");
+  }
+
+  void getVillage(int id) async {
+    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=village&districtId=$id"));
+    var listData = villageFromJson(response.body);
+    setState(() {
+      _dataVillage = listData;      
+    });
+    print("data : $listData");
+  }
+
+  void getNeighbourhood(int id) async {
+    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=neighbourhood&villageId=$id"));
+    var listData = neighbourhoodFromJson(response.body);
+    setState(() {
+      _dataNeighbourhood = listData;      
+    });
+    print("data : $listData");
+  }
+
   addData(
     String maritalNumber,
     String maritalSerial,
@@ -130,6 +193,7 @@ class _AddDataMaritalState extends State<AddDataMarital> {
     String wifeReligion,
     String wifeNationality,
     String address,
+    int _valNeighbourhood,
     File _image,
     File _imageHusband,
     File _imageWife,
@@ -156,6 +220,7 @@ class _AddDataMaritalState extends State<AddDataMarital> {
         'wife_nationality': wifeNationality,
         'wife_religion': wifeReligion,
         'address': address,
+        'neighbourhood_id': _valNeighbourhood,
         'marital_attachment': await dio.MultipartFile.fromFile(
           _image.path,
           filename: fileName,
@@ -174,17 +239,23 @@ class _AddDataMaritalState extends State<AddDataMarital> {
       });
       String token = await UserService().getToken();
       dio.Dio client = new dio.Dio();
-      client.options.headers["Authorization"] = "Bearer $token";
+      client.options.headers["Authorization"] = token;
       
       print(formData);
 
       final response = await client.post(
-        "http://10.0.2.2:8000/api/marital/store",
+        "http://10.0.2.2:8000/api/marital",
         data: formData,
       );
       print(response);
 
     }
+
+  @override
+  void initState() {
+    super.initState();
+    getProvince();
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -454,10 +525,103 @@ class _AddDataMaritalState extends State<AddDataMarital> {
                 onChanged: (value) {},
               ),
               SizedBox(height: 16.0,),
-              Container(
+              Text('Provinsi'),
+                DropdownButton<int>(
+                hint: Text("Pilih Provinsi"),
+                value: _valProvince,
+                items: _dataProvince?.map((item) {
+                  return DropdownMenuItem(
+                    child: Text(item.name),
+                    value: item.id,
+                  );
+                })?.toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _valProvince = value;
+                    _valCity = null;
+                  });
+                  getCity(value);
+                },
+              ),
+              SizedBox(height: 16.0),
+            Text('Kota'),
+              DropdownButton<int>(
+                hint: Text("Pilih Kota"),
+                value: _valCity,
+                items: _dataCity?.map((item) {
+                  return DropdownMenuItem(
+                    child: Text(item.name),
+                    value: item.id 
+                  );
+                })?.toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _valCity = value;
+                    _valDistrict = null;                      
+                  });
+                  getDistrict(value);
+                },
+            ),
+            SizedBox(height: 16.0),
+            Text('Kecamatan'),
+              DropdownButton(
+                hint: Text("Pilih Kecamatan"),
+                value: _valDistrict,
+                items: _dataDistrict?.map((item) {
+                  return DropdownMenuItem(
+                    child: Text(item.name),
+                    value: item.id,
+                  );
+                })?.toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _valDistrict = value;
+                    _valVillage = null;                      
+                  });
+                  getVillage(value);
+                },
+              ),
+            SizedBox(height: 16.0),
+            Text('Kelurahan'),
+              DropdownButton(
+                hint: Text("Pilih Kelurahan"),
+                value: _valVillage,
+                items: _dataVillage?.map((item) {
+                  return DropdownMenuItem(
+                    child: Text(item.name),
+                    value: item.id,
+                  );
+                })?.toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _valVillage = value;
+                    _valNeighbourhood = null;                      
+                  });
+                  getNeighbourhood(value);
+                },
+              ),
+            SizedBox(height: 16.0),
+            Text('RT'),
+              DropdownButton(
+                hint: Text("Pilih RT"),
+                value: _valNeighbourhood,
+                items: _dataNeighbourhood?.map((item) {
+                  return DropdownMenuItem(
+                    child: Text(item.name),
+                    value: item.id,
+                  );
+                })?.toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _valNeighbourhood = value;                     
+                  });
+                },    
+              ),
+            SizedBox(height: 16.0),
+            Container(
                 padding: EdgeInsets.only(left: 50.0, right: 50.0),
                 child: _image == null
-                ? Text('No image selected.')
+                ? Text('Image, Size max 2MB')
                 : Image.file(_image),
               ),
               SizedBox(
@@ -477,7 +641,7 @@ class _AddDataMaritalState extends State<AddDataMarital> {
               Container(
                 padding: EdgeInsets.only(left: 50.0, right: 50.0),
                 child: _imageHusband == null
-                ? Text('No image selected.')
+                ? Text('Image, Size max 2MB')
                 : Image.file(_imageHusband),
               ),
               SizedBox(
@@ -497,7 +661,7 @@ class _AddDataMaritalState extends State<AddDataMarital> {
               Container(
                 padding: EdgeInsets.only(left: 50.0, right: 50.0),
                 child: _imageWife == null
-                ? Text('No image selected.')
+                ? Text('Image, Size max 2MB')
                 : Image.file(_imageWife),
               ),
               SizedBox(
@@ -535,7 +699,8 @@ class _AddDataMaritalState extends State<AddDataMarital> {
                       _wifeBirthPlaceCtrl.text, 
                       _wifeReligionCtrl.text, 
                       _wifeNationalityCtrl.text, 
-                      _addressCtrl.text, 
+                      _addressCtrl.text,
+                      _valNeighbourhood, 
                       _image, 
                       _imageHusband, 
                       _imageWife

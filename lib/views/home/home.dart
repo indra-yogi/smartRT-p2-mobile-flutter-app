@@ -9,6 +9,7 @@ import 'package:p2_mobile_app/views/marital/marital.dart';
 import 'package:p2_mobile_app/views/statistic/statistic.dart';
 import 'package:p2_mobile_app/views/validation/validation_divorce.dart';
 import 'package:p2_mobile_app/views/validation/validation_marital.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
 
@@ -21,6 +22,11 @@ class _HomeState extends State<Home> {
   final user = UserService().getUserDetail();
   final token = UserService().getToken();
   Future<User> selectedUser = UserService().getUserDetail();
+
+  Future deleteToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.remove("token");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +84,7 @@ class _HomeState extends State<Home> {
             padding: EdgeInsets.all(5.0),
             child: InkWell(
               onTap: () {
+                deleteToken();
                 Get.to(() => LoginPage());
               },
               child: Card(

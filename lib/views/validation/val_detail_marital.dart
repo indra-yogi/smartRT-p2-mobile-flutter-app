@@ -25,8 +25,10 @@ class _DetailMaritalState extends State<ValidateDetailMaritalPage> {
       Dio client = new Dio();
 
       final maritalId = widget.marital.id;
+      String token = await UserService().getToken();
+      client.options.headers["Authorization"] = token;
       final response = await client.put(
-        "http://10.0.2.2:8000/api/marital/statusUpdate/$maritalId",
+        "http://10.0.2.2:8000/api/marital/set/$maritalId/APPROVED",
       );
       print(response);
       Get.to(() => Home());
@@ -40,7 +42,8 @@ class _DetailMaritalState extends State<ValidateDetailMaritalPage> {
         title: Text( widget.marital.husbandName ),
         centerTitle: true,
         ),
-      body: SingleChildScrollView(
+      body: InteractiveViewer(
+        constrained: false,
         child: Padding(
           padding: EdgeInsets.all(20),
           child: Row(

@@ -18,7 +18,7 @@ class DivorceService {
        'Authorization': token
      };
 
-    var response = await client.get(Uri.parse(urlIndexDivorce),
+    var response = await client.get(Uri.parse(urlDivorce),
       headers: requestHeaders
     );
 
@@ -42,7 +42,7 @@ class DivorceService {
        'Authorization': token
      };
 
-    var response = await client.get(Uri.parse(urlValidateDivorce),
+    var response = await client.get(Uri.parse(urlDivorce),
       headers: requestHeaders
     );
 

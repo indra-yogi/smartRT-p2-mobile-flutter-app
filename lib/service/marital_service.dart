@@ -21,7 +21,7 @@ class MaritalService {
        'Authorization': token
      };
 
-    var response = await client.get(Uri.parse(urlIndexMarital), 
+    var response = await client.get(Uri.parse(urlMarital), 
       headers: requestHeaders
       );
 
@@ -45,7 +45,7 @@ class MaritalService {
        'Authorization': token
      };
 
-    var response = await client.get(Uri.parse(urlValidateMarital),
+    var response = await client.get(Uri.parse(urlMarital),
     headers: requestHeaders
     );
 
@@ -80,7 +80,7 @@ class MaritalService {
       'address': marital.address,
     };
     
-    var response = await client.post(Uri.parse(urlAddMarital),
+    var response = await client.post(Uri.parse(urlMarital),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',

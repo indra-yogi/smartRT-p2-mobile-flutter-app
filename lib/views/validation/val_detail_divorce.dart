@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:p2_mobile_app/model/divorce_model.dart';
+import 'package:p2_mobile_app/service/user_service.dart';
 import 'package:p2_mobile_app/views/home/home.dart';
 
 class ValidateDetailDivorcePage extends StatefulWidget {
@@ -20,8 +21,23 @@ class _DetailMaritalState extends State<ValidateDetailDivorcePage> {
       Dio client = new Dio();
 
       final divorceId = widget.divorce.id;
+      String token = await UserService().getToken();
+      client.options.headers["Authorization"] = token;
       final response = await client.put(
-        "http://10.0.2.2:8000/api/divorce/statusUpdate/$divorceId",
+        "http://10.0.2.2:8000/api/divorce/statusUpdate/$divorceId/APPROVED",
+      );
+      print(response);
+      Get.to(() => Home());
+  }
+
+  Future rejected() async {
+      Dio client = new Dio();
+
+      final divorceId = widget.divorce.id;
+      String token = await UserService().getToken();
+      client.options.headers["Authorization"] = token;
+      final response = await client.put(
+        "http://10.0.2.2:8000/api/divorce/statusUpdate/$divorceId/REJECTED",
       );
       print(response);
       Get.to(() => Home());
@@ -35,7 +51,8 @@ class _DetailMaritalState extends State<ValidateDetailDivorcePage> {
         title: Text( widget.divorce.name ),
         centerTitle: true,
         ),
-      body: SingleChildScrollView(
+      body: InteractiveViewer(
+        constrained: false,
         child: Padding(
           padding: EdgeInsets.all(20),
           child: Row(
@@ -205,9 +222,20 @@ class _DetailMaritalState extends State<ValidateDetailDivorcePage> {
                     ),
                   ),
                   SizedBox(height: 18,),
-                  ElevatedButton(onPressed: () {
-                    validate();
-                  }, child: Text('Validasi'))
+                  Row(
+                    children: [
+                      ElevatedButton(onPressed: () {
+                        rejected();
+                      }, child: Text('Tolak Validasi'),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.red)
+                      ),),
+                      SizedBox(width: 20,),
+                      ElevatedButton(onPressed: () {
+                        validate();
+                      }, child: Text('Validasi')),
+                    ],
+                  )
                 ],  
               ),
             ],

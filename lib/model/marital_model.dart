@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 List<Marital> maritalFromJson(String str) =>
-    List<Marital>.from(json.decode(str).map((x) => Marital.fromJson(x)));
+    List<Marital>.from(json.decode(str)['record'].map((x) => Marital.fromJson(x)));
 
 String maritalToJson(List<Marital> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
@@ -29,6 +29,7 @@ class Marital {
     this.maritalAttachment,
     this.husbandAttachment,
     this.wifeAttachment,
+    this.neighbourhoodId,
   });
 
   int id;
@@ -52,29 +53,30 @@ class Marital {
   String maritalAttachment;
   String husbandAttachment;
   String wifeAttachment;
+  int neighbourhoodId;
 
-  factory Marital.fromJson(Map<String, dynamic> json) => Marital(
-    id: json["id"],
-    maritalNumber: json["marital_number"],
-    maritalSerial: json["marital_serial_number"],
-    marriedDate: json["married_date"],
-    marriedPlace: json["married_place"],
-    husbandName: json["husband_name"],
-    husbandNik: json["husband_nik"],
-    husbandBirthDate: json["husband_birth_date"],
-    husbandBirthPlace: json["husband_birth_place"],
-    husbandNationality: json["husband_nationality"],
-    husbandReligion: json["husband_religion"],
-    wifeName: json["wife_name"],
-    wifeNik: json["wife_nik"],
-    wifeBirthDate: json["wife_birth_date"],
-    wifeBirthPlace: json["wife_birth_place"],
-    wifeNationality: json["wife_nationality"],
-    wifeReligion: json["wife_religion"],
-    address: json["address"],
-    maritalAttachment: json["marital_attachment"],
-    husbandAttachment: json["husband_marital_attachment"],
-    wifeAttachment: json["wife_marital_attachment"],
+  factory Marital.fromJson(Map<String, dynamic> parsedJson) => Marital(
+    id: parsedJson["id"],
+    maritalNumber: parsedJson["marital_number"],
+    maritalSerial: parsedJson["marital_serial_number"],
+    marriedDate: parsedJson["married_date"],
+    marriedPlace: parsedJson["married_place"],
+    husbandName: parsedJson["husband_name"],
+    husbandNik: parsedJson["husband_nik"],
+    husbandBirthDate: parsedJson["husband_birth_date"],
+    husbandBirthPlace: parsedJson["husband_birth_place"],
+    husbandNationality: parsedJson["husband_nationality"],
+    husbandReligion: parsedJson["husband_religion"],
+    wifeName: parsedJson["wife_name"],
+    wifeNik: parsedJson["wife_nik"],
+    wifeBirthDate: parsedJson["wife_birth_date"],
+    wifeBirthPlace: parsedJson["wife_birth_place"],
+    wifeNationality: parsedJson["wife_nationality"],
+    wifeReligion: parsedJson["wife_religion"],
+    address: parsedJson["address"],
+    maritalAttachment: parsedJson["marital_attachment"],
+    husbandAttachment: parsedJson["husband_marital_attachment"],
+    wifeAttachment: parsedJson["wife_marital_attachment"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -99,5 +101,6 @@ class Marital {
     "maritalAttachment": maritalAttachment,
     "husbandAttachment": husbandAttachment,
     "wifeAttachment": wifeAttachment,
+    "neigbourhoodId": neighbourhoodId,
   };
 }

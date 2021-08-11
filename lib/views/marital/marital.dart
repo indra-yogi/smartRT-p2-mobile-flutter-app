@@ -31,61 +31,76 @@ class MaritalPage extends StatelessWidget {
           )
         ],
       ),
-      body: InteractiveViewer(
-        constrained: false,
-        child: Obx(() {
-          if (_controller.isLoading.value) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return DataTable(
-              columns: [
-                DataColumn(
-                  label: Text(
-                    "Name",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold
-                    ),
-                    )
-                  ),
-                DataColumn(
-                  label: Text(
-                    "No. Akta Perkawinan",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold
-                    ),
-                    )
-                  ),
-                DataColumn(
-                  label: Text(
-                    "Action",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold
-                    ),
-                    )
-                  ),
-                
-              ], 
-              rows: List.generate(_controller.maritalList.length, (index) {
-                final x = _controller.maritalList[index].husbandName;
-                final y = _controller.maritalList[index].maritalNumber;
-
-                return DataRow(
-                  color: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
-                    if (index % 2 == 0) {
-                      return Colors.blueGrey[100].withOpacity(0.3);
-                    } return null;
-                  }),
-                  cells: [
-                  DataCell(Container(child: Text(x),)),
-                  DataCell(Container(child: Text(y),)),
-                  DataCell(Container(child: InkWell(onTap: () {Get.to(() => DetailMaritalPage(_controller.maritalList[index]),);}, child: Text("Detail"),),),),
-                ]);
-              }),
+      body: Obx(() {
+        if (_controller.isLoading.value) {
+          return Center(
+            child: CircularProgressIndicator(),
           );
-        }),
-      ),
+        }
+        return InteractiveViewer(
+          constrained: false,
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.only(top: 10),
+                width: 420.0,
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Search',
+                    icon: Icon(Icons.search_rounded),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              DataTable(
+                  columns: [
+                    DataColumn(
+                      label: Text(
+                        "Name",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold
+                        ),
+                        )
+                      ),
+                    DataColumn(
+                      label: Text(
+                        "No. Akta Perkawinan",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold
+                        ),
+                        )
+                      ),
+                    DataColumn(
+                      label: Text(
+                        "Action",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold
+                        ),
+                        )
+                      ),
+                    
+                  ], 
+                  rows: List.generate(_controller.maritalList.length, (index) {
+                    final x = _controller.maritalList[index].husbandName;
+                    final y = _controller.maritalList[index].maritalNumber;
+
+                    return DataRow(
+                      color: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+                        if (index % 2 == 0) {
+                          return Colors.blueGrey[100].withOpacity(0.3);
+                        } return null;
+                      }),
+                      cells: [
+                      DataCell(Container(child: Text(x),)),
+                      DataCell(Container(child: Text(y),)),
+                      DataCell(Container(child: InkWell(onTap: () {Get.to(() => DetailMaritalPage(_controller.maritalList[index]),);}, child: Text("Detail"),),),),
+                    ]);
+                  }),
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }
