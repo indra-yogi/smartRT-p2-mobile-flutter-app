@@ -12,7 +12,6 @@ class DivorceController extends GetxController {
   @override
   void onInit() {
     fetchDivorce();
-    fetchValidateDivorce();
     super.onInit();
   }
 
@@ -22,18 +21,6 @@ class DivorceController extends GetxController {
       var divorce = await DivorceService.getDivorce();
       if (divorce != null) {
         divorceList.value = divorce;
-      }
-    } finally {
-      isLoading(false);
-    }
-  }
-
-  void fetchValidateDivorce() async {
-    isLoading(true);
-    try {
-      var divorce = await DivorceService.getValidateDivorce();
-      if (divorce != null) {
-        divorceVList.value = divorce;
       }
     } finally {
       isLoading(false);

@@ -6,6 +6,12 @@ List<Divorce> divorceFromJson(String str) =>
 String divorceToJson(List<Divorce> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
+List<Status> statusFromJson(String str) =>
+    List<Status>.from(json.decode(str).map((x) => Status.fromJson(x)));
+
+String statusToJson(List<Status> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 class Divorce {
   Divorce({
     this.id,
@@ -21,6 +27,7 @@ class Divorce {
     this.religion,
     this.address,
     this.attachment,
+    this.status,
 });
 
   int id;
@@ -36,21 +43,23 @@ class Divorce {
   String religion;
   String address;
   String attachment;
+  Status status;
 
-  factory Divorce.fromJson(Map<String, dynamic> json) => Divorce(
-    id: json["id"],
-    divorceNumber: json["divorce_number"],
-    maritalNumber: json["marital_number"],
-    divorceSerial: json["divorce_serial_number"],
-    divorceDate: json["divorce_date"],
-    divorcePlace: json["divorce_place"],
-    name: json["name"],
-    nik: json["nik"],
-    birthPlace: json["birth_place"],
-    birthDate: json["birth_date"],
-    religion: json["religion"],
-    address: json["address"],
-    attachment: json["attachment"],
+  factory Divorce.fromJson(Map<String, dynamic> parsedJson) => Divorce(
+    id: parsedJson["id"],
+    divorceNumber: parsedJson["divorce_number"],
+    maritalNumber: parsedJson["marital_number"],
+    divorceSerial: parsedJson["divorce_serial_number"],
+    divorceDate: parsedJson["divorce_date"],
+    divorcePlace: parsedJson["divorce_place"],
+    name: parsedJson["name"],
+    nik: parsedJson["nik"],
+    birthPlace: parsedJson["birth_place"],
+    birthDate: parsedJson["birth_date"],
+    religion: parsedJson["religion"],
+    address: parsedJson["address"],
+    attachment: parsedJson["attachment"],
+    status: Status.fromJson(parsedJson["status"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -67,5 +76,26 @@ class Divorce {
     "religion": religion,
     "address": address,
     "attachment": attachment,
+    "status": status
+  };
+}
+
+class Status {
+  Status({
+    this.id,
+    this.status
+  });
+
+  int id;
+  String status;
+
+  factory Status.fromJson(Map<String, dynamic> json) => Status(
+    id: json["id"],
+    status: json["status"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "status": status,
   };
 }

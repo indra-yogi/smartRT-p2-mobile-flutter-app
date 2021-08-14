@@ -6,6 +6,12 @@ List<Marital> maritalFromJson(String str) =>
 String maritalToJson(List<Marital> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
+List<Status> statusFromJson(String str) =>
+    List<Status>.from(json.decode(str).map((x) => Status.fromJson(x)));
+
+String statusToJson(List<Status> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 class Marital {
   Marital({
     this.id,
@@ -30,6 +36,7 @@ class Marital {
     this.husbandAttachment,
     this.wifeAttachment,
     this.neighbourhoodId,
+    this.status,
   });
 
   int id;
@@ -54,6 +61,7 @@ class Marital {
   String husbandAttachment;
   String wifeAttachment;
   int neighbourhoodId;
+  Status status;
 
   factory Marital.fromJson(Map<String, dynamic> parsedJson) => Marital(
     id: parsedJson["id"],
@@ -77,6 +85,7 @@ class Marital {
     maritalAttachment: parsedJson["marital_attachment"],
     husbandAttachment: parsedJson["husband_marital_attachment"],
     wifeAttachment: parsedJson["wife_marital_attachment"],
+    status: Status.fromJson(parsedJson["status"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -102,5 +111,26 @@ class Marital {
     "husbandAttachment": husbandAttachment,
     "wifeAttachment": wifeAttachment,
     "neigbourhoodId": neighbourhoodId,
+    "status": status,
+  };
+}
+
+class Status {
+  Status({
+    this.id,
+    this.status
+  });
+
+  int id;
+  String status;
+
+  factory Status.fromJson(Map<String, dynamic> json) => Status(
+    id: json["id"],
+    status: json["status"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "status": status,
   };
 }

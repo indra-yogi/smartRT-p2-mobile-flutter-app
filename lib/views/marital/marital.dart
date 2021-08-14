@@ -2,15 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:p2_mobile_app/controller/marital_controller.dart';
+import 'package:p2_mobile_app/model/marital_model.dart';
 import 'package:p2_mobile_app/service/user_service.dart';
 import 'package:p2_mobile_app/views/marital/add_marital.dart';
 import 'package:p2_mobile_app/views/marital/detail_marital.dart';
 
 
-class MaritalPage extends StatelessWidget {
+
+class MaritalPage extends StatefulWidget {
+  @override
+  _MaritalPageState createState() => _MaritalPageState();
+}
+
+class _MaritalPageState extends State<MaritalPage> {
   final MaritalController _controller = Get.put(MaritalController());
 
   final token = UserService().getToken();
+
+  TextEditingController _searchController = TextEditingController();
+  List<Marital> filteredMarital = [];
+  String _searchResult = "";
+
+  @override
+  void initState() {
+    super.initState();
+    filteredMarital = _controller.maritalList;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +62,20 @@ class MaritalPage extends StatelessWidget {
                 padding: EdgeInsets.only(top: 10),
                 width: 420.0,
                 child: TextField(
+                  controller: _searchController,
                   decoration: InputDecoration(
                     hintText: 'Search',
                     icon: Icon(Icons.search_rounded),
                     border: OutlineInputBorder(),
                   ),
+                  onChanged: (value) {
+                    setState(() {
+                      _searchResult = value;
+                      filteredMarital = _controller.maritalList.where((d) => 
+                        d.husbandName.contains(_searchResult) || d.maritalNumber.contains(_searchResult)
+                      ).toList();
+                    });
+                  },
                 ),
               ),
               DataTable(
@@ -72,6 +98,14 @@ class MaritalPage extends StatelessWidget {
                       ),
                     DataColumn(
                       label: Text(
+                        "Status",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold
+                        ),
+                        )
+                      ),  
+                    DataColumn(
+                      label: Text(
                         "Action",
                         style: TextStyle(
                           fontWeight: FontWeight.bold
@@ -80,9 +114,10 @@ class MaritalPage extends StatelessWidget {
                       ),
                     
                   ], 
-                  rows: List.generate(_controller.maritalList.length, (index) {
-                    final x = _controller.maritalList[index].husbandName;
-                    final y = _controller.maritalList[index].maritalNumber;
+                  rows: List.generate(filteredMarital.length, (index) {
+                    final x = filteredMarital[index].husbandName;
+                    final y = filteredMarital[index].maritalNumber;
+                    final z = filteredMarital[index].status.status;
 
                     return DataRow(
                       color: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
@@ -93,7 +128,8 @@ class MaritalPage extends StatelessWidget {
                       cells: [
                       DataCell(Container(child: Text(x),)),
                       DataCell(Container(child: Text(y),)),
-                      DataCell(Container(child: InkWell(onTap: () {Get.to(() => DetailMaritalPage(_controller.maritalList[index]),);}, child: Text("Detail"),),),),
+                      DataCell(Container(child: Text(z),)),
+                      DataCell(Container(child: InkWell(onTap: () {Get.to(() => DetailMaritalPage(filteredMarital[index]),);}, child: Text("Detail"),),),),
                     ]);
                   }),
               ),

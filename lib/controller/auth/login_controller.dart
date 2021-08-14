@@ -11,10 +11,10 @@ class LoginController extends GetxController {
     try {
       loginProcess(true);
       List loginResp = await LoginService().login(nik: nik, password: password);
-      if (loginResp[0] != "") {
-        //success
+      if (loginResp[0] != "" ) {
         final prefs = await SharedPreferences.getInstance();
         prefs.setString("token", loginResp[0]);
+        print(loginResp[0]);
       } else {
         error = loginResp[1];
       }

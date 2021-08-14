@@ -25,6 +25,10 @@ class AddDataMarital extends StatefulWidget {
 
 class _AddDataMaritalState extends State<AddDataMarital> {
   _AddDataMaritalState();
+
+  DateTime selectedHusbandBirthDate;
+  DateTime selectedWifeBirthDate;
+  DateTime selectedMaritalDate;
   int _valProvince; 
   int _valCity; 
   int _valDistrict;
@@ -45,17 +49,14 @@ class _AddDataMaritalState extends State<AddDataMarital> {
   final _maritalNumberCtrl = TextEditingController();
   final _maritalSerialCtrl = TextEditingController();
   final _marriedPlaceCtrl = TextEditingController();
-  final _marriedDateCtrl = TextEditingController();
   final _husbandNameCtrl = TextEditingController();
   final _husbandNikCtrl = TextEditingController();
   final _husbandBirthPlaceCtrl = TextEditingController();
-  final _husbandBirthDateCtrl = TextEditingController();
   final _husbandNationalityCtrl = TextEditingController();
   final _husbandReligionCtrl = TextEditingController();
   final _wifeNameCtrl = TextEditingController();
   final _wifeNikCtrl = TextEditingController();
   final _wifeBirthPlaceCtrl = TextEditingController();
-  final _wifeBirthDateCtrl = TextEditingController();
   final _wifeNationalityCtrl = TextEditingController();
   final _wifeReligionCtrl = TextEditingController();
   final _addressCtrl = TextEditingController();
@@ -140,7 +141,7 @@ class _AddDataMaritalState extends State<AddDataMarital> {
   }
 
   void getCity(int id) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=city&provinceId=$id"));
+    final response = await http.get(Uri.parse("http://10.0.2.2:3000/api/location?type=city&provinceId=$id"));
     var listData = cityFromJson(response.body);
     setState(() {
       _dataCity = listData;      
@@ -149,7 +150,7 @@ class _AddDataMaritalState extends State<AddDataMarital> {
   }
 
   void getDistrict(int id) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=district&cityId=$id"));
+    final response = await http.get(Uri.parse("http://10.0.2.2:3000/api/location?type=district&cityId=$id"));
     var listData = districtFromJson(response.body);
     setState(() {
       _dataDistrict = listData;      
@@ -158,7 +159,7 @@ class _AddDataMaritalState extends State<AddDataMarital> {
   }
 
   void getVillage(int id) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=village&districtId=$id"));
+    final response = await http.get(Uri.parse("http://10.0.2.2:3000/api/location?type=village&districtId=$id"));
     var listData = villageFromJson(response.body);
     setState(() {
       _dataVillage = listData;      
@@ -167,7 +168,7 @@ class _AddDataMaritalState extends State<AddDataMarital> {
   }
 
   void getNeighbourhood(int id) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=neighbourhood&villageId=$id"));
+    final response = await http.get(Uri.parse("http://10.0.2.2:3000/api/location?type=neighbourhood&villageId=$id"));
     var listData = neighbourhoodFromJson(response.body);
     setState(() {
       _dataNeighbourhood = listData;      
@@ -178,17 +179,17 @@ class _AddDataMaritalState extends State<AddDataMarital> {
   addData(
     String maritalNumber,
     String maritalSerial,
-    String marriedDate,
+    DateTime selectedMaritalDate,
     String marriedPlace,
     String husbandName,
     String husbandNik,
-    String husbandBirthDate,
+    DateTime selectedHusbandBirthDate,
     String husbandBirthPlace,
     String husbandReligion,
     String husbandNationality,
     String wifeName,
     String wifeNik,
-    String wifeBirthDate,
+    DateTime selectedWifeBirthDate,
     String wifeBirthPlace,
     String wifeReligion,
     String wifeNationality,
@@ -205,17 +206,17 @@ class _AddDataMaritalState extends State<AddDataMarital> {
       dio.FormData formData = dio.FormData.fromMap({
         'marital_number': maritalNumber,
         'marital_serial_number': maritalSerial,
-        'married_date': marriedDate,
+        'married_date': selectedMaritalDate,
         'married_place': marriedPlace,
         'husband_name': husbandName,
         'husband_nik': husbandNik,
-        'husband_birth_date': husbandBirthDate,
-        'husband_birth_place': husbandBirthPlace,
+        'husband_birth_date': selectedHusbandBirthDate,
+        'husband_birth_place': husbandBirthPlace.toString(),
         'husband_nationality': husbandNationality,
         'husband_religion': husbandReligion,
         'wife_name': wifeName,
         'wife_nik': wifeNik,
-        'wife_birth_date': wifeBirthDate,
+        'wife_birth_date': selectedWifeBirthDate.toString(),
         'wife_birth_place': wifeBirthPlace,
         'wife_nationality': wifeNationality,
         'wife_religion': wifeReligion,
@@ -244,7 +245,7 @@ class _AddDataMaritalState extends State<AddDataMarital> {
       print(formData);
 
       final response = await client.post(
-        "http://10.0.2.2:8000/api/marital",
+        "http://10.0.2.2:3000/api/marital",
         data: formData,
       );
       print(response);
@@ -255,6 +256,9 @@ class _AddDataMaritalState extends State<AddDataMarital> {
   void initState() {
     super.initState();
     getProvince();
+    selectedMaritalDate = DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day);
+    selectedHusbandBirthDate = DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day);
+    selectedWifeBirthDate = DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day);
   }
   
   @override
@@ -316,18 +320,17 @@ class _AddDataMaritalState extends State<AddDataMarital> {
               ),
               SizedBox(height: 16.0,),
               Text('Tanggal Perkawinan'),
-              TextFormField(
-                controller: _marriedDateCtrl,
-                decoration: InputDecoration(
-                  hintText: 'mm-dd-yyyy'
-                ),
-                validator: (value) {
-                  if(value.isEmpty) {
-                    return 'Tanggal Perkawinan is required';
-                  }
-                  return null;
+              InputDatePickerFormField(
+                firstDate: DateTime(1970),
+                lastDate: DateTime.now(),
+                initialDate: selectedMaritalDate,
+                errorFormatText: 'Invalid Format. Format bulan/hari/tahun',
+                errorInvalidText: 'Invalid Date',
+                onDateSubmitted: (date) {
+                  setState(() {
+                    selectedMaritalDate = date;                    
+                  });
                 },
-                onChanged: (value) {},
               ),
               SizedBox(height: 16.0,),
               Text('Nama Suami'),
@@ -376,18 +379,18 @@ class _AddDataMaritalState extends State<AddDataMarital> {
               ),
               SizedBox(height: 16.0,),
               Text('Tanggal Lahir Suami'),
-              TextFormField(
-                controller: _husbandBirthDateCtrl,
-                decoration: InputDecoration(
-                  hintText: 'mm-dd-yyyy'
-                ),
-                validator: (value) {
-                  if(value.isEmpty) {
-                    return 'Tanggal Lahir Suami is required';
-                  }
-                  return null;
+              InputDatePickerFormField(
+                firstDate: DateTime(1970),
+                lastDate: DateTime.now(),
+                initialDate: selectedHusbandBirthDate,
+                errorFormatText: 'Invalid Format. Format bulan/hari/tahun',
+                errorInvalidText: 'Invalid Date',
+                
+                onDateSubmitted: (date) {
+                  setState(() {
+                    selectedHusbandBirthDate = date;                    
+                  });
                 },
-                onChanged: (value) {},
               ),
               SizedBox(height: 16.0,),
               Text('Kewarganegaraan Suami'),
@@ -466,18 +469,18 @@ class _AddDataMaritalState extends State<AddDataMarital> {
               ),
               SizedBox(height: 16.0,),
               Text('Tanggal Lahir Istri'),
-              TextFormField(
-                controller: _wifeBirthDateCtrl,
-                decoration: InputDecoration(
-                  hintText: 'mm-dd-yyyy'
-                ),
-                validator: (value) {
-                  if(value.isEmpty) {
-                    return 'Tanggal Lahir Istri is required';
-                  }
-                  return null;
+              InputDatePickerFormField(
+                firstDate: DateTime(1970),
+                lastDate: DateTime.now(),
+                initialDate: selectedWifeBirthDate,
+                errorFormatText: 'Invalid Format. Format bulan/hari/tahun',
+                errorInvalidText: 'Invalid Date',
+                
+                onDateSubmitted: (date) {
+                  setState(() {
+                    selectedWifeBirthDate = date;                    
+                  });
                 },
-                onChanged: (value) {},
               ),
               SizedBox(height: 16.0,),
               Text('Kewarganegaraan Istri'),
@@ -685,17 +688,17 @@ class _AddDataMaritalState extends State<AddDataMarital> {
                     addData(
                       _maritalNumberCtrl.text, 
                       _maritalSerialCtrl.text, 
-                      _marriedDateCtrl.text, 
+                      selectedMaritalDate, 
                       _marriedPlaceCtrl.text, 
                       _husbandNameCtrl.text, 
                       _husbandNikCtrl.text, 
-                      _husbandBirthDateCtrl.text, 
+                      selectedHusbandBirthDate, 
                       _husbandBirthPlaceCtrl.text, 
                       _husbandReligionCtrl.text, 
                       _husbandNationalityCtrl.text, 
                       _wifeNameCtrl.text, 
                       _wifeNikCtrl.text, 
-                      _wifeBirthDateCtrl.text, 
+                      selectedWifeBirthDate, 
                       _wifeBirthPlaceCtrl.text, 
                       _wifeReligionCtrl.text, 
                       _wifeNationalityCtrl.text, 

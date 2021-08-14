@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:p2_mobile_app/views/auth/login_view.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 class StatisticPage extends StatefulWidget {
@@ -30,7 +32,9 @@ class StatisticPageState extends State<StatisticPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Statistik Perkawinan/Perceraian'),
+        title: Text('Aplikasi SmartRT P2'),
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.blueAccent,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -112,6 +116,14 @@ class StatisticPageState extends State<StatisticPage> {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: (() {
+          Get.to(() => LoginPage());
+        }), 
+        label: Text("Login"),
+        icon: Icon(Icons.login),
+        backgroundColor: Colors.blueAccent,
       ),
     );
   }

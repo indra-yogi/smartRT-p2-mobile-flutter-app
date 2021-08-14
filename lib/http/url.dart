@@ -1,7 +1,7 @@
 //Base url
-const urlBase = 'http://10.0.2.2:8000/api/';
+const urlBase = 'http://10.0.2.2:3000/api/';
 //user url
-const currentUserUrl = urlBase + 'user/userProfile';
+const currentUserUrl = urlBase + 'auth/currentUser';
 const urlLogin = urlBase + 'auth/login';
 const urlLogout = urlBase + 'auth/logout';
 const urlRegister = urlBase + 'auth/register';
@@ -16,10 +16,12 @@ const urlMarital = urlBase + 'marital';
 const urlShowMarital = urlBase + 'marital/{id}';
 const urlSetStatusMaritalApproved = urlBase + 'marital/set/{id}/APPROVED';
 const urlSetStatusMaritalWaiting = urlBase + 'marital/set/{id}/WAITING';
-const urlSetStatusMaritalRejected = urlBase + 'marital/set/{id}/REJECTED';
+const urlSetStatusMarital = urlBase + 'marital/set/';
 //location url
 const urlGetNeighbourhood = urlBase + 'location?type=neighbourhood&villageId={id}';
 const urlGetVillage = urlBase + 'location?type=village&districtId={id}';
 const urlGetDistrict = urlBase + 'location?type=district&cityId={id}';
 const urlGetCity = urlBase + 'location?type=city&provinceId={id}';
 const urlGetProvince = urlBase + 'location?type=province';
+//statistic url
+const urlAllData = urlBase + 'statistic?type=All';

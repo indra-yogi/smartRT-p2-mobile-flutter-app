@@ -34,6 +34,19 @@ class _DetailMaritalState extends State<ValidateDetailMaritalPage> {
       Get.to(() => Home());
   }
 
+  Future rejected() async {
+      Dio client = new Dio();
+
+      final maritalId = widget.marital.id;
+      String token = await UserService().getToken();
+      client.options.headers["Authorization"] = token;
+      final response = await client.put(
+        "http://10.0.2.2:8000/api/divorce/set/$maritalId/REJECTED",
+      );
+      print(response);
+  }    
+    
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -297,9 +310,20 @@ class _DetailMaritalState extends State<ValidateDetailMaritalPage> {
                     ),
                   ),
                   SizedBox(height: 18,),
-                  ElevatedButton(onPressed: () {
-                    validate();
-                  }, child: Text('Validasi'))
+                  Row(
+                    children: [
+                      ElevatedButton(onPressed: () {
+                        rejected();
+                      }, child: Text('Tolak Validasi'),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.red)
+                      ),),
+                      SizedBox(width: 20,),
+                      ElevatedButton(onPressed: () {
+                        validate();
+                      }, child: Text('Validasi')),
+                    ],
+                  )
                 ],  
               ),
             ],

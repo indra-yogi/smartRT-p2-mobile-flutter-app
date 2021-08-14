@@ -26,7 +26,9 @@ class AddDataDivorce extends StatefulWidget {
 class _AddDataDivorceState extends State<AddDataDivorce> {
   _AddDataDivorceState();
 
-   int _valProvince; 
+  DateTime selectedDate;
+  DateTime selectedDivorceDate;
+  int _valProvince; 
   int _valCity; 
   int _valDistrict;
   int _valVillage;
@@ -46,11 +48,9 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
   final _maritalNumberCtrl = TextEditingController();
   final _divorceSerialCtrl = TextEditingController();
   final _divorcePlaceCtrl = TextEditingController();
-  final _divorceDateCtrl = TextEditingController();
   final _nameCtrl = TextEditingController();
   final _nikCtrl = TextEditingController();
   final _birthPlaceCtrl = TextEditingController();
-  final _birthDateCtrl = TextEditingController();
   final _religionCtrl = TextEditingController();
   final _addressCtrl = TextEditingController();
   final token = UserService().getToken();
@@ -94,7 +94,7 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
   }
 
   void getCity(int id) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=city&provinceId=$id"));
+    final response = await http.get(Uri.parse("http://10.0.2.2:3000/api/location?type=city&provinceId=$id"));
     var listData = cityFromJson(response.body);
     setState(() {
       _dataCity = listData;      
@@ -103,7 +103,7 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
   }
 
   void getDistrict(int id) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=district&cityId=$id"));
+    final response = await http.get(Uri.parse("http://10.0.2.2:3000/api/location?type=district&cityId=$id"));
     var listData = districtFromJson(response.body);
     setState(() {
       _dataDistrict = listData;      
@@ -112,7 +112,7 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
   }
 
   void getVillage(int id) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=village&districtId=$id"));
+    final response = await http.get(Uri.parse("http://10.0.2.2:3000/api/location?type=village&districtId=$id"));
     var listData = villageFromJson(response.body);
     setState(() {
       _dataVillage = listData;      
@@ -121,7 +121,7 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
   }
 
   void getNeighbourhood(int id) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=neighbourhood&villageId=$id"));
+    final response = await http.get(Uri.parse("http://10.0.2.2:3000/api/location?type=neighbourhood&villageId=$id"));
     var listData = neighbourhoodFromJson(response.body);
     setState(() {
       _dataNeighbourhood = listData;      
@@ -133,11 +133,11 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
     String divorceNumber,
     String maritalNumber,
     String divorceSerial,
-    String divorceDate,
+    DateTime selectedDivorceDate,
     String divorcePlace,
     String name,
     String nik,
-    String birthDate,
+    DateTime selectedDate,
     String birthPlace,
     String religion,
     String address,
@@ -150,11 +150,11 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
         'divorce_number': divorceNumber,
         'marital_number': maritalNumber,
         'divorce_serial_number': divorceSerial,
-        'divorce_date': divorceDate,
+        'divorce_date': selectedDivorceDate.toString(),
         'divorce_place': divorcePlace,
         'name': name,
         'nik': nik,
-        'birth_date': birthDate,
+        'birth_date': selectedDate.toString(),
         'birth_place': birthPlace,
         'religion': religion,
         'address': address,
@@ -172,7 +172,7 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
       print(formData);
 
       final response = await client.post(
-        "http://10.0.2.2:8000/api/divorce",
+        "http://10.0.2.2:3000/api/divorce",
         data: formData,
       );
       print(response);
@@ -183,6 +183,8 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
   void initState() {
     super.initState();
     getProvince();
+    selectedDate = DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day);
+    selectedDivorceDate = DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day);
   }
   
   @override
@@ -258,18 +260,18 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
               ),
               SizedBox(height: 16.0,),
               Text('Tanggal Perceraian'),
-              TextFormField(
-                controller: _divorceDateCtrl,
-                decoration: InputDecoration(
-                  hintText: 'mm-dd-yyyy'
-                ),
-                validator: (value) {
-                  if(value.isEmpty) {
-                    return 'Tanggal Perceraian is required';
-                  }
-                  return null;
+              InputDatePickerFormField(
+                firstDate: DateTime(1970),
+                lastDate: DateTime.now(),
+                initialDate: selectedDivorceDate,
+                errorFormatText: 'Invalid Format. Format bulan/hari/tahun',
+                errorInvalidText: 'Invalid Date',
+                
+                onDateSubmitted: (date) {
+                  setState(() {
+                    selectedDivorceDate = date;                    
+                  });
                 },
-                onChanged: (value) {},
               ),
               SizedBox(height: 16.0,),
               Text('Nama Lengkap'),
@@ -317,20 +319,22 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
                 onChanged: (value) {},
               ),
               SizedBox(height: 16.0,),
+              
               Text('Tanggal Lahir'),
-              TextFormField(
-                controller: _birthDateCtrl,
-                decoration: InputDecoration(
-                  hintText: 'mm-dd-yyyy'
-                ),
-                validator: (value) {
-                  if(value.isEmpty) {
-                    return 'Tanggal Lahir is required';
-                  }
-                  return null;
+              InputDatePickerFormField(
+                firstDate: DateTime(1970),
+                lastDate: DateTime.now(),
+                initialDate: selectedDate,
+                errorFormatText: 'Invalid Format. Format bulan/hari/tahun',
+                errorInvalidText: 'Invalid Date',
+                
+                onDateSubmitted: (date) {
+                  setState(() {
+                    selectedDate = date;                    
+                  });
                 },
-                onChanged: (value) {},
               ),
+              SizedBox(height: 16.0,),
               SizedBox(height: 16.0,),
               Text('Agama'),
               TextFormField(
@@ -483,11 +487,11 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
                       _divorceNumberCtrl.text,
                       _maritalNumberCtrl.text, 
                       _divorceSerialCtrl.text, 
-                      _divorceDateCtrl.text, 
+                      selectedDivorceDate,
                       _divorcePlaceCtrl.text, 
                       _nameCtrl.text, 
                       _nikCtrl.text, 
-                      _birthDateCtrl.text, 
+                      selectedDate, 
                       _birthPlaceCtrl.text, 
                       _religionCtrl.text,  
                       _addressCtrl.text,

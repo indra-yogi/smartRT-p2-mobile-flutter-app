@@ -38,16 +38,18 @@ class UserService {
 
   Future<User> getUserDetail() async {
     String token;
-    UserService().getToken().then((value) {
+    await UserService().getToken().then((value) {
       token = value;
     });
 
+    Map<String, String> requestHeaders = {
+       'Content-type': 'application/json',
+       'Accept': 'application/json',
+       'Authorization': token
+     };
+
     var response = await client.get(Uri.parse(currentUserUrl),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': token,
-      }
+      headers: requestHeaders
     );
 
     if (response.statusCode == 200) {
