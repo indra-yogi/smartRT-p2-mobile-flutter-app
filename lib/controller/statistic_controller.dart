@@ -5,19 +5,34 @@ import 'package:p2_mobile_app/service/statistic_service.dart';
 class StatisticController extends GetxController {
   var isLoading = true.obs;
   // ignore: deprecated_member_use
-  var totalData = List<Statistic>().obs;
+  var maritalData = List<Statistic>().obs;
+  // ignore: deprecated_member_use
+  var divorceData = List<Statistic>().obs;
 
   void onInit() {
+    statisticMaritalData();
+    statisticDivorceData();
     super.onInit();
-    statisticAllData();
   }
 
-  void statisticAllData() async {
+  void statisticMaritalData() async {
     isLoading(true);
     try {
-      var statistic = await StatisticService().getAll();
+      var statistic = await StatisticService.getMaritalChart();
       if (statistic != null) {
-        totalData.value = statistic;
+        maritalData.value = statistic;
+      }
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  void statisticDivorceData() async {
+    isLoading(true);
+    try {
+      var statistic = await StatisticService.getDivorceChart();
+      if (statistic != null) {
+        divorceData.value = statistic;
       }
     } finally {
       isLoading(false);

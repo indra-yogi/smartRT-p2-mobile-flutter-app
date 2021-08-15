@@ -1,5 +1,5 @@
 //Base url
-const urlBase = 'http://10.0.2.2:3000/api/';
+const urlBase = 'http://10.0.2.2:8000/api/';
 //user url
 const currentUserUrl = urlBase + 'auth/currentUser';
 const urlLogin = urlBase + 'auth/login';
@@ -24,4 +24,5 @@ const urlGetDistrict = urlBase + 'location?type=district&cityId={id}';
 const urlGetCity = urlBase + 'location?type=city&provinceId={id}';
 const urlGetProvince = urlBase + 'location?type=province';
 //statistic url
-const urlAllData = urlBase + 'statistic?type=All';
+const urlMaritalChart = urlBase + 'statistic?type=CHART&chartType=MARITALS';
+const urlDivorceChart = urlBase + 'statistic?type=CHART&chartType=DIVORCE';

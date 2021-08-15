@@ -314,6 +314,7 @@ class _DetailMaritalState extends State<ValidateDetailMaritalPage> {
                     children: [
                       ElevatedButton(onPressed: () {
                         rejected();
+                        Get.to(Home());
                       }, child: Text('Tolak Validasi'),
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.red)
@@ -321,6 +322,7 @@ class _DetailMaritalState extends State<ValidateDetailMaritalPage> {
                       SizedBox(width: 20,),
                       ElevatedButton(onPressed: () {
                         validate();
+                        Get.to(Home());
                       }, child: Text('Validasi')),
                     ],
                   )

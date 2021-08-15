@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:p2_mobile_app/http/url.dart';
 import 'package:p2_mobile_app/model/location/city_model.dart';
 import 'package:p2_mobile_app/model/location/district_model.dart';
@@ -26,9 +27,9 @@ class AddDataMarital extends StatefulWidget {
 class _AddDataMaritalState extends State<AddDataMarital> {
   _AddDataMaritalState();
 
-  DateTime selectedHusbandBirthDate;
-  DateTime selectedWifeBirthDate;
   DateTime selectedMaritalDate;
+  DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+
   int _valProvince; 
   int _valCity; 
   int _valDistrict;
@@ -49,14 +50,17 @@ class _AddDataMaritalState extends State<AddDataMarital> {
   final _maritalNumberCtrl = TextEditingController();
   final _maritalSerialCtrl = TextEditingController();
   final _marriedPlaceCtrl = TextEditingController();
+  final _marriedDateCtrl = TextEditingController();
   final _husbandNameCtrl = TextEditingController();
   final _husbandNikCtrl = TextEditingController();
   final _husbandBirthPlaceCtrl = TextEditingController();
+  final _husbandBirthDateCtrl = TextEditingController();
   final _husbandNationalityCtrl = TextEditingController();
   final _husbandReligionCtrl = TextEditingController();
   final _wifeNameCtrl = TextEditingController();
   final _wifeNikCtrl = TextEditingController();
   final _wifeBirthPlaceCtrl = TextEditingController();
+  final _wifeBirthDateCtrl = TextEditingController();
   final _wifeNationalityCtrl = TextEditingController();
   final _wifeReligionCtrl = TextEditingController();
   final _addressCtrl = TextEditingController();
@@ -141,7 +145,7 @@ class _AddDataMaritalState extends State<AddDataMarital> {
   }
 
   void getCity(int id) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:3000/api/location?type=city&provinceId=$id"));
+    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=city&provinceId=$id"));
     var listData = cityFromJson(response.body);
     setState(() {
       _dataCity = listData;      
@@ -150,7 +154,7 @@ class _AddDataMaritalState extends State<AddDataMarital> {
   }
 
   void getDistrict(int id) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:3000/api/location?type=district&cityId=$id"));
+    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=district&cityId=$id"));
     var listData = districtFromJson(response.body);
     setState(() {
       _dataDistrict = listData;      
@@ -159,7 +163,7 @@ class _AddDataMaritalState extends State<AddDataMarital> {
   }
 
   void getVillage(int id) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:3000/api/location?type=village&districtId=$id"));
+    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=village&districtId=$id"));
     var listData = villageFromJson(response.body);
     setState(() {
       _dataVillage = listData;      
@@ -168,7 +172,7 @@ class _AddDataMaritalState extends State<AddDataMarital> {
   }
 
   void getNeighbourhood(int id) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:3000/api/location?type=neighbourhood&villageId=$id"));
+    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=neighbourhood&villageId=$id"));
     var listData = neighbourhoodFromJson(response.body);
     setState(() {
       _dataNeighbourhood = listData;      
@@ -179,17 +183,17 @@ class _AddDataMaritalState extends State<AddDataMarital> {
   addData(
     String maritalNumber,
     String maritalSerial,
-    DateTime selectedMaritalDate,
+    String marriedDate,
     String marriedPlace,
     String husbandName,
     String husbandNik,
-    DateTime selectedHusbandBirthDate,
+    String husbandBirthDate,
     String husbandBirthPlace,
     String husbandReligion,
     String husbandNationality,
     String wifeName,
     String wifeNik,
-    DateTime selectedWifeBirthDate,
+    String wifeBirthDate,
     String wifeBirthPlace,
     String wifeReligion,
     String wifeNationality,
@@ -210,13 +214,13 @@ class _AddDataMaritalState extends State<AddDataMarital> {
         'married_place': marriedPlace,
         'husband_name': husbandName,
         'husband_nik': husbandNik,
-        'husband_birth_date': selectedHusbandBirthDate,
-        'husband_birth_place': husbandBirthPlace.toString(),
+        'husband_birth_date': husbandBirthDate,
+        'husband_birth_place': husbandBirthPlace,
         'husband_nationality': husbandNationality,
         'husband_religion': husbandReligion,
         'wife_name': wifeName,
         'wife_nik': wifeNik,
-        'wife_birth_date': selectedWifeBirthDate.toString(),
+        'wife_birth_date': wifeBirthDate,
         'wife_birth_place': wifeBirthPlace,
         'wife_nationality': wifeNationality,
         'wife_religion': wifeReligion,
@@ -245,20 +249,30 @@ class _AddDataMaritalState extends State<AddDataMarital> {
       print(formData);
 
       final response = await client.post(
-        "http://10.0.2.2:3000/api/marital",
+        "http://10.0.2.2:8000/api/marital",
         data: formData,
       );
       print(response);
 
     }
 
+    _selectMarriedDate() async {
+      final DateTime picked = await showDatePicker (
+        context: context,
+        initialDate: selectedMaritalDate,
+        firstDate: DateTime(1970),
+        lastDate: DateTime.now(),
+      );
+      setState(() {
+        selectedMaritalDate = picked ?? selectedMaritalDate;        
+      });
+    }
+
   @override
   void initState() {
     super.initState();
     getProvince();
-    selectedMaritalDate = DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day);
-    selectedHusbandBirthDate = DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day);
-    selectedWifeBirthDate = DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day);
+    selectedMaritalDate = DateTime.now();
   }
   
   @override
@@ -320,17 +334,16 @@ class _AddDataMaritalState extends State<AddDataMarital> {
               ),
               SizedBox(height: 16.0,),
               Text('Tanggal Perkawinan'),
-              InputDatePickerFormField(
-                firstDate: DateTime(1970),
-                lastDate: DateTime.now(),
-                initialDate: selectedMaritalDate,
-                errorFormatText: 'Invalid Format. Format bulan/hari/tahun',
-                errorInvalidText: 'Invalid Date',
-                onDateSubmitted: (date) {
-                  setState(() {
-                    selectedMaritalDate = date;                    
-                  });
-                },
+              InkWell(
+                onTap: () => _selectMarriedDate(),
+                child: IgnorePointer(
+                  child: TextField(
+                    controller: _marriedDateCtrl,
+                    decoration: InputDecoration(
+                      hintText: ('${dateFormat.format(selectedMaritalDate)}'),
+                    ),
+                  ),
+                ),
               ),
               SizedBox(height: 16.0,),
               Text('Nama Suami'),
@@ -379,18 +392,18 @@ class _AddDataMaritalState extends State<AddDataMarital> {
               ),
               SizedBox(height: 16.0,),
               Text('Tanggal Lahir Suami'),
-              InputDatePickerFormField(
-                firstDate: DateTime(1970),
-                lastDate: DateTime.now(),
-                initialDate: selectedHusbandBirthDate,
-                errorFormatText: 'Invalid Format. Format bulan/hari/tahun',
-                errorInvalidText: 'Invalid Date',
-                
-                onDateSubmitted: (date) {
-                  setState(() {
-                    selectedHusbandBirthDate = date;                    
-                  });
-                },
+              InkWell(
+                onTap: () => _selectMarriedDate(),
+                child: IgnorePointer(
+                  child: TextField(
+                    controller: _husbandBirthDateCtrl,
+                    decoration: InputDecoration(
+
+                      hintText: ('${dateFormat.format(selectedMaritalDate)}'),
+                    ),
+
+                  ),
+                ),
               ),
               SizedBox(height: 16.0,),
               Text('Kewarganegaraan Suami'),
@@ -469,18 +482,18 @@ class _AddDataMaritalState extends State<AddDataMarital> {
               ),
               SizedBox(height: 16.0,),
               Text('Tanggal Lahir Istri'),
-              InputDatePickerFormField(
-                firstDate: DateTime(1970),
-                lastDate: DateTime.now(),
-                initialDate: selectedWifeBirthDate,
-                errorFormatText: 'Invalid Format. Format bulan/hari/tahun',
-                errorInvalidText: 'Invalid Date',
-                
-                onDateSubmitted: (date) {
-                  setState(() {
-                    selectedWifeBirthDate = date;                    
-                  });
-                },
+              InkWell(
+                onTap: () => _selectMarriedDate(),
+                child: IgnorePointer(
+                  child: TextField(
+                    controller: _wifeBirthDateCtrl,
+                    decoration: InputDecoration(
+
+                      hintText: ('${dateFormat.format(selectedMaritalDate)}'),
+                    ),
+
+                  ),
+                ),
               ),
               SizedBox(height: 16.0,),
               Text('Kewarganegaraan Istri'),
@@ -688,17 +701,17 @@ class _AddDataMaritalState extends State<AddDataMarital> {
                     addData(
                       _maritalNumberCtrl.text, 
                       _maritalSerialCtrl.text, 
-                      selectedMaritalDate, 
+                      _marriedDateCtrl.text, 
                       _marriedPlaceCtrl.text, 
                       _husbandNameCtrl.text, 
                       _husbandNikCtrl.text, 
-                      selectedHusbandBirthDate, 
+                      _husbandBirthDateCtrl.text, 
                       _husbandBirthPlaceCtrl.text, 
                       _husbandReligionCtrl.text, 
                       _husbandNationalityCtrl.text, 
                       _wifeNameCtrl.text, 
                       _wifeNikCtrl.text, 
-                      selectedWifeBirthDate, 
+                      _wifeBirthDateCtrl.text, 
                       _wifeBirthPlaceCtrl.text, 
                       _wifeReligionCtrl.text, 
                       _wifeNationalityCtrl.text, 

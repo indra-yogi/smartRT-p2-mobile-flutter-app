@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:p2_mobile_app/http/url.dart';
 import 'package:p2_mobile_app/model/location/city_model.dart';
 import 'package:p2_mobile_app/model/location/district_model.dart';
@@ -27,7 +28,7 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
   _AddDataDivorceState();
 
   DateTime selectedDate;
-  DateTime selectedDivorceDate;
+  DateFormat dateFormat = DateFormat("yyyy-MM-dd");
   int _valProvince; 
   int _valCity; 
   int _valDistrict;
@@ -47,9 +48,11 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
   final _divorceNumberCtrl = TextEditingController();
   final _maritalNumberCtrl = TextEditingController();
   final _divorceSerialCtrl = TextEditingController();
+  final _divorceDateCtrl = TextEditingController();
   final _divorcePlaceCtrl = TextEditingController();
   final _nameCtrl = TextEditingController();
   final _nikCtrl = TextEditingController();
+  final _birthDateCtrl = TextEditingController();
   final _birthPlaceCtrl = TextEditingController();
   final _religionCtrl = TextEditingController();
   final _addressCtrl = TextEditingController();
@@ -94,7 +97,7 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
   }
 
   void getCity(int id) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:3000/api/location?type=city&provinceId=$id"));
+    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=city&provinceId=$id"));
     var listData = cityFromJson(response.body);
     setState(() {
       _dataCity = listData;      
@@ -103,7 +106,7 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
   }
 
   void getDistrict(int id) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:3000/api/location?type=district&cityId=$id"));
+    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=district&cityId=$id"));
     var listData = districtFromJson(response.body);
     setState(() {
       _dataDistrict = listData;      
@@ -112,7 +115,7 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
   }
 
   void getVillage(int id) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:3000/api/location?type=village&districtId=$id"));
+    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=village&districtId=$id"));
     var listData = villageFromJson(response.body);
     setState(() {
       _dataVillage = listData;      
@@ -121,7 +124,7 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
   }
 
   void getNeighbourhood(int id) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:3000/api/location?type=neighbourhood&villageId=$id"));
+    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=neighbourhood&villageId=$id"));
     var listData = neighbourhoodFromJson(response.body);
     setState(() {
       _dataNeighbourhood = listData;      
@@ -133,11 +136,11 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
     String divorceNumber,
     String maritalNumber,
     String divorceSerial,
-    DateTime selectedDivorceDate,
+    String divorceDate,
     String divorcePlace,
     String name,
     String nik,
-    DateTime selectedDate,
+    String birthDate,
     String birthPlace,
     String religion,
     String address,
@@ -150,11 +153,11 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
         'divorce_number': divorceNumber,
         'marital_number': maritalNumber,
         'divorce_serial_number': divorceSerial,
-        'divorce_date': selectedDivorceDate.toString(),
+        'divorce_date': divorceDate,
         'divorce_place': divorcePlace,
         'name': name,
         'nik': nik,
-        'birth_date': selectedDate.toString(),
+        'birth_date': birthDate,
         'birth_place': birthPlace,
         'religion': religion,
         'address': address,
@@ -172,20 +175,30 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
       print(formData);
 
       final response = await client.post(
-        "http://10.0.2.2:3000/api/divorce",
+        "http://10.0.2.2:8000/api/divorce",
         data: formData,
       );
       print(response);
+    }
 
+    _selectDivorceDate() async {
+      final DateTime picked = await showDatePicker (
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1970),
+        lastDate: DateTime.now(),
+      );
+      setState(() {
+        selectedDate = picked ?? selectedDate;        
+      });
     }
   
   @override
   void initState() {
     super.initState();
     getProvince();
-    selectedDate = DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day);
-    selectedDivorceDate = DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day);
-  }
+    selectedDate = DateTime.now();
+    }
   
   @override
   Widget build(BuildContext context) {
@@ -260,18 +273,16 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
               ),
               SizedBox(height: 16.0,),
               Text('Tanggal Perceraian'),
-              InputDatePickerFormField(
-                firstDate: DateTime(1970),
-                lastDate: DateTime.now(),
-                initialDate: selectedDivorceDate,
-                errorFormatText: 'Invalid Format. Format bulan/hari/tahun',
-                errorInvalidText: 'Invalid Date',
-                
-                onDateSubmitted: (date) {
-                  setState(() {
-                    selectedDivorceDate = date;                    
-                  });
-                },
+              InkWell(
+                onTap: () => _selectDivorceDate(),
+                child: IgnorePointer(
+                  child: TextField(
+                    controller: _divorceDateCtrl,
+                    decoration: InputDecoration(
+                      hintText: ('${dateFormat.format(selectedDate)}'),
+                    ),
+                  ),
+                ),
               ),
               SizedBox(height: 16.0,),
               Text('Nama Lengkap'),
@@ -321,18 +332,16 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
               SizedBox(height: 16.0,),
               
               Text('Tanggal Lahir'),
-              InputDatePickerFormField(
-                firstDate: DateTime(1970),
-                lastDate: DateTime.now(),
-                initialDate: selectedDate,
-                errorFormatText: 'Invalid Format. Format bulan/hari/tahun',
-                errorInvalidText: 'Invalid Date',
-                
-                onDateSubmitted: (date) {
-                  setState(() {
-                    selectedDate = date;                    
-                  });
-                },
+              InkWell(
+                onTap: () => _selectDivorceDate(),
+                child: IgnorePointer(
+                  child: TextField(
+                    controller: _birthDateCtrl,
+                    decoration: InputDecoration(
+                      hintText: ('${dateFormat.format(selectedDate)}'),
+                    ),
+                  ),
+                ),
               ),
               SizedBox(height: 16.0,),
               SizedBox(height: 16.0,),
@@ -487,11 +496,11 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
                       _divorceNumberCtrl.text,
                       _maritalNumberCtrl.text, 
                       _divorceSerialCtrl.text, 
-                      selectedDivorceDate,
+                      _divorceDateCtrl.text,
                       _divorcePlaceCtrl.text, 
                       _nameCtrl.text, 
                       _nikCtrl.text, 
-                      selectedDate, 
+                      _birthDateCtrl.text, 
                       _birthPlaceCtrl.text, 
                       _religionCtrl.text,  
                       _addressCtrl.text,

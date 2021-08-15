@@ -55,6 +55,7 @@ class _MaritalPageState extends State<MaritalPage> {
           );
         }
         return InteractiveViewer(
+          
           constrained: false,
           child: Column(
             children: [
@@ -79,6 +80,7 @@ class _MaritalPageState extends State<MaritalPage> {
                 ),
               ),
               DataTable(
+                
                   columns: [
                     DataColumn(
                       label: Text(

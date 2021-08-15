@@ -1,33 +1,32 @@
-
 import 'dart:convert';
 
 List<Statistic> statisticFromJson(String str) =>
     List<Statistic>.from(json.decode(str).map((x) => Statistic.fromJson(x)));
 
-String statisticToJson(List<Statistic> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+    String statisticToJson(List<Statistic> data) =>
+      json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Statistic {
   Statistic({
-    this.totalData,
-    this.divorce,
-    this.marital,
+    this.name,
+    this.value,
+    this.percentageValue,
   });
 
-  String totalData;
-  String divorce;
-  String marital;
+  int name;
+  int value;
+  double percentageValue;
 
-  factory Statistic.fromJson(Map<String, dynamic> json) => Statistic(
-    totalData: json["totalData"],
-    divorce: json["divorce"],
-    marital: json["marital"],
+  factory Statistic.fromJson(Map<String, dynamic> parsedJson) => Statistic(
+    name: parsedJson["name"],
+    value: parsedJson["value"],
+    percentageValue: parsedJson["percentage_value"].toDouble(),
   );
 
   Map<String, dynamic> toJson() => {
-    "totalData": totalData,
-    "divorce": divorce,
-    "marital": marital,
+    "name": name,
+    "value": value,
+    "percentage_value": percentageValue,
   };
 
 }
