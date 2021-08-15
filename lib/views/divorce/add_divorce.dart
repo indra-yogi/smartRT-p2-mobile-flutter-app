@@ -28,7 +28,9 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
   _AddDataDivorceState();
 
   DateTime selectedDate;
+  DateTime selectedBirth;
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+  DateFormat birthFormat = DateFormat("yyyy-MM-dd");
   int _valProvince; 
   int _valCity; 
   int _valDistrict;
@@ -181,7 +183,7 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
       print(response);
     }
 
-    _selectDivorceDate() async {
+    Future<void> _selectDivorceDate(BuildContext context) async {
       final DateTime picked = await showDatePicker (
         context: context,
         initialDate: selectedDate,
@@ -189,7 +191,21 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
         lastDate: DateTime.now(),
       );
       setState(() {
-        selectedDate = picked ?? selectedDate;        
+        selectedDate = picked ?? selectedDate;
+        _divorceDateCtrl.value = TextEditingValue(text: dateFormat.format(picked));        
+      });
+    }
+
+    Future<void> _selectBirthDate(BuildContext context) async {
+      final DateTime picked = await showDatePicker (
+        context: context,
+        initialDate: selectedBirth,
+        firstDate: DateTime(1970),
+        lastDate: DateTime.now(),
+      );
+      setState(() {
+        selectedBirth = picked ?? selectedBirth;
+        _birthDateCtrl.value = TextEditingValue(text: dateFormat.format(picked));        
       });
     }
   
@@ -198,6 +214,7 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
     super.initState();
     getProvince();
     selectedDate = DateTime.now();
+    selectedBirth = DateTime.now();
     }
   
   @override
@@ -274,12 +291,12 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
               SizedBox(height: 16.0,),
               Text('Tanggal Perceraian'),
               InkWell(
-                onTap: () => _selectDivorceDate(),
+                onTap: () => _selectDivorceDate(context),
                 child: IgnorePointer(
                   child: TextField(
                     controller: _divorceDateCtrl,
                     decoration: InputDecoration(
-                      hintText: ('${dateFormat.format(selectedDate)}'),
+                      hintText: ('${dateFormat.format(selectedDate).substring(0,10)}'),
                     ),
                   ),
                 ),
@@ -333,12 +350,12 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
               
               Text('Tanggal Lahir'),
               InkWell(
-                onTap: () => _selectDivorceDate(),
+                onTap: () => _selectBirthDate(context),
                 child: IgnorePointer(
                   child: TextField(
                     controller: _birthDateCtrl,
                     decoration: InputDecoration(
-                      hintText: ('${dateFormat.format(selectedDate)}'),
+                      hintText: ('${birthFormat.format(selectedBirth).substring(0,10)}'),
                     ),
                   ),
                 ),

@@ -28,6 +28,8 @@ class _AddDataMaritalState extends State<AddDataMarital> {
   _AddDataMaritalState();
 
   DateTime selectedMaritalDate;
+  DateTime selectedHusbandBirth;
+  DateTime selectedWifeBirth;
   DateFormat dateFormat = DateFormat("yyyy-MM-dd");
 
   int _valProvince; 
@@ -256,7 +258,7 @@ class _AddDataMaritalState extends State<AddDataMarital> {
 
     }
 
-    _selectMarriedDate() async {
+    Future<void> _selectMarriedDate(BuildContext context) async {
       final DateTime picked = await showDatePicker (
         context: context,
         initialDate: selectedMaritalDate,
@@ -264,7 +266,34 @@ class _AddDataMaritalState extends State<AddDataMarital> {
         lastDate: DateTime.now(),
       );
       setState(() {
-        selectedMaritalDate = picked ?? selectedMaritalDate;        
+        selectedMaritalDate = picked ?? selectedMaritalDate;
+        _marriedDateCtrl.value = TextEditingValue(text: dateFormat.format(picked));        
+      });
+    }
+
+    Future<void> _selectHusbandDate(BuildContext context) async {
+      final DateTime picked = await showDatePicker (
+        context: context,
+        initialDate: selectedHusbandBirth,
+        firstDate: DateTime(1970),
+        lastDate: DateTime.now(),
+      );
+      setState(() {
+        selectedHusbandBirth = picked ?? selectedHusbandBirth;
+        _husbandBirthDateCtrl.value = TextEditingValue(text: dateFormat.format(picked));        
+      });
+    }
+
+    Future<void> _selectWifeDate(BuildContext context) async {
+      final DateTime picked = await showDatePicker (
+        context: context,
+        initialDate: selectedWifeBirth,
+        firstDate: DateTime(1970),
+        lastDate: DateTime.now(),
+      );
+      setState(() {
+        selectedWifeBirth = picked ?? selectedWifeBirth;
+        _wifeBirthDateCtrl.value = TextEditingValue(text: dateFormat.format(picked));        
       });
     }
 
@@ -273,6 +302,8 @@ class _AddDataMaritalState extends State<AddDataMarital> {
     super.initState();
     getProvince();
     selectedMaritalDate = DateTime.now();
+    selectedHusbandBirth = DateTime.now();
+    selectedWifeBirth = DateTime.now();
   }
   
   @override
@@ -335,12 +366,12 @@ class _AddDataMaritalState extends State<AddDataMarital> {
               SizedBox(height: 16.0,),
               Text('Tanggal Perkawinan'),
               InkWell(
-                onTap: () => _selectMarriedDate(),
+                onTap: () => _selectMarriedDate(context),
                 child: IgnorePointer(
                   child: TextField(
                     controller: _marriedDateCtrl,
                     decoration: InputDecoration(
-                      hintText: ('${dateFormat.format(selectedMaritalDate)}'),
+                      hintText: ('${dateFormat.format(selectedMaritalDate).substring(0,10)}'),
                     ),
                   ),
                 ),
@@ -393,13 +424,13 @@ class _AddDataMaritalState extends State<AddDataMarital> {
               SizedBox(height: 16.0,),
               Text('Tanggal Lahir Suami'),
               InkWell(
-                onTap: () => _selectMarriedDate(),
+                onTap: () => _selectHusbandDate(context),
                 child: IgnorePointer(
                   child: TextField(
                     controller: _husbandBirthDateCtrl,
                     decoration: InputDecoration(
 
-                      hintText: ('${dateFormat.format(selectedMaritalDate)}'),
+                      hintText: ('${dateFormat.format(selectedHusbandBirth).substring(0,10)}'),
                     ),
 
                   ),
@@ -483,13 +514,13 @@ class _AddDataMaritalState extends State<AddDataMarital> {
               SizedBox(height: 16.0,),
               Text('Tanggal Lahir Istri'),
               InkWell(
-                onTap: () => _selectMarriedDate(),
+                onTap: () => _selectWifeDate(context),
                 child: IgnorePointer(
                   child: TextField(
                     controller: _wifeBirthDateCtrl,
                     decoration: InputDecoration(
 
-                      hintText: ('${dateFormat.format(selectedMaritalDate)}'),
+                      hintText: ('${dateFormat.format(selectedWifeBirth)}'),
                     ),
 
                   ),
