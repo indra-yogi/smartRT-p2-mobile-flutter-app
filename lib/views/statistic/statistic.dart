@@ -60,7 +60,7 @@ class StatisticPageState extends State<StatisticPage> {
      return divorceMap;
   }
 
-  Widget pieChartMarital() {
+  Widget pieChartMarital(BuildContext context) {
     return PieChart(
         dataMap: getChartDataMap(),
         animationDuration: Duration(milliseconds: 800),
@@ -88,9 +88,9 @@ class StatisticPageState extends State<StatisticPage> {
     );
   }
 
-  Widget pieChartDivorce() {
+  Widget pieChartDivorce(BuildContext context) {
     return PieChart(
-        dataMap: getChartDataMap(),
+        dataMap: getChartDivorceMap(),
         animationDuration: Duration(milliseconds: 800),
         chartLegendSpacing: 32,
         chartRadius: MediaQuery.of(context).size.width / 1.5,
@@ -131,7 +131,8 @@ class StatisticPageState extends State<StatisticPage> {
             child: CircularProgressIndicator(),
           );
         } 
-        return SingleChildScrollView(
+        return InteractiveViewer(
+          constrained: false,
           child: Padding(
             padding: EdgeInsets.all(15.0),
             child: Column(
@@ -143,7 +144,7 @@ class StatisticPageState extends State<StatisticPage> {
                     fontWeight: FontWeight.bold
                   ),
                 ),
-                pieChartMarital(),
+                pieChartMarital(context),
                 SizedBox(height: 16.0,),
                 SizedBox(
                   height: 50.0, 
@@ -155,7 +156,7 @@ class StatisticPageState extends State<StatisticPage> {
                     fontWeight: FontWeight.bold
                   ),
                 ),
-                pieChartDivorce(),
+                pieChartDivorce(context),
                 SizedBox(
                   height: 16.0,
                 ),
