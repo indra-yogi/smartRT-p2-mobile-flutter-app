@@ -28,7 +28,7 @@ class _DetailMaritalState extends State<ValidateDetailMaritalPage> {
       String token = await UserService().getToken();
       client.options.headers["Authorization"] = token;
       final response = await client.put(
-        "http://10.0.2.2:8000/api/marital/set/$maritalId/APPROVED",
+        "https://api.smartrtpp.xyz/api/marital/set/$maritalId/APPROVED",
       );
       print(response);
       Get.to(() => Home());
@@ -41,7 +41,7 @@ class _DetailMaritalState extends State<ValidateDetailMaritalPage> {
       String token = await UserService().getToken();
       client.options.headers["Authorization"] = token;
       final response = await client.put(
-        "http://10.0.2.2:8000/api/divorce/set/$maritalId/REJECTED",
+        "https://api.smartrtpp.xyz/api/divorce/set/$maritalId/REJECTED",
       );
       print(response);
   }    

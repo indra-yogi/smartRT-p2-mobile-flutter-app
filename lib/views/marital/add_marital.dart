@@ -145,7 +145,7 @@ class _AddDataMaritalState extends State<AddDataMarital> {
   }
 
   void getCity(int id) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=city&provinceId=$id"));
+    final response = await http.get(Uri.parse("https://api.smartrtpp.xyz/api/location?type=city&provinceId=$id"));
     var listData = cityFromJson(response.body);
     setState(() {
       _dataCity = listData;      
@@ -154,7 +154,7 @@ class _AddDataMaritalState extends State<AddDataMarital> {
   }
 
   void getDistrict(int id) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=district&cityId=$id"));
+    final response = await http.get(Uri.parse("https://api.smartrtpp.xyz/api/location?type=district&cityId=$id"));
     var listData = districtFromJson(response.body);
     setState(() {
       _dataDistrict = listData;      
@@ -163,7 +163,7 @@ class _AddDataMaritalState extends State<AddDataMarital> {
   }
 
   void getVillage(int id) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=village&districtId=$id"));
+    final response = await http.get(Uri.parse("https://api.smartrtpp.xyz/api/location?type=village&districtId=$id"));
     var listData = villageFromJson(response.body);
     setState(() {
       _dataVillage = listData;      
@@ -172,7 +172,7 @@ class _AddDataMaritalState extends State<AddDataMarital> {
   }
 
   void getNeighbourhood(int id) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=neighbourhood&villageId=$id"));
+    final response = await http.get(Uri.parse("https://api.smartrtpp.xyz/api/location?type=neighbourhood&villageId=$id"));
     var listData = neighbourhoodFromJson(response.body);
     setState(() {
       _dataNeighbourhood = listData;      
@@ -249,7 +249,7 @@ class _AddDataMaritalState extends State<AddDataMarital> {
       print(formData);
 
       final response = await client.post(
-        "http://10.0.2.2:8000/api/marital",
+        "https://api.smartrtpp.xyz/api/marital",
         data: formData,
       );
       print(response);

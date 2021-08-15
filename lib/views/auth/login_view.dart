@@ -119,52 +119,6 @@ class _LoginPageState extends State<LoginPage> {
                       ) 
                     ),
                     SizedBox(height: 8,),
-                    Material(
-                        elevation: 5.0,
-                        borderRadius: BorderRadius.circular(30),
-                        color: controller.loginProcess.value
-                            ? Theme.of(context).disabledColor
-                            : Colors.white,
-                        child: Column(
-                          children: [
-                            MaterialButton(
-                              minWidth: MediaQuery.of(context).size.width,
-                              padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-                              onPressed: () async {
-                                if(_formKey.currentState.validate()) {
-                                  String error = await controller.login(
-                                    nik: _nikTextController.text,
-                                    password: _passwordTextController.text
-                                  );
-                                if (error != "") {
-                                  Get.defaultDialog(
-                                    title: "Oops!",
-                                    middleText: error
-                                  );
-                                } else {
-                                  Get.off(() => Home());
-                                }
-                              }
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Login with Google",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(width: 12),
-                                Icon(FontAwesomeIcons.google),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ) 
-                    ),
                     TextButton(
                             onPressed: () async {
                               Get.to(() => Register());

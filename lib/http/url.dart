@@ -1,5 +1,5 @@
 //Base url
-const urlBase = 'http://10.0.2.2:8000/api/';
+const urlBase = 'https://api.smartrtpp.xyz/api/';
 //user url
 const currentUserUrl = urlBase + 'auth/currentUser';
 const urlLogin = urlBase + 'auth/login';

@@ -45,7 +45,7 @@ class _RegisterState extends State<Register> {
   }
 
   void getCity(int id) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=city&provinceId=$id"));
+    final response = await http.get(Uri.parse("https://api.smartrtpp.xyz/api/location?type=city&provinceId=$id"));
     var listData = cityFromJson(response.body);
     setState(() {
       _dataCity = listData;      
@@ -54,7 +54,7 @@ class _RegisterState extends State<Register> {
   }
 
   void getDistrict(int id) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=district&cityId=$id"));
+    final response = await http.get(Uri.parse("https://api.smartrtpp.xyz/api/location?type=district&cityId=$id"));
     var listData = districtFromJson(response.body);
     setState(() {
       _dataDistrict = listData;      
@@ -63,7 +63,7 @@ class _RegisterState extends State<Register> {
   }
 
   void getVillage(int id) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=village&districtId=$id"));
+    final response = await http.get(Uri.parse("https://api.smartrtpp.xyz/api/location?type=village&districtId=$id"));
     var listData = villageFromJson(response.body);
     setState(() {
       _dataVillage = listData;      
@@ -72,7 +72,7 @@ class _RegisterState extends State<Register> {
   }
 
   void getNeighbourhood(int id) async {
-    final response = await http.get(Uri.parse("http://10.0.2.2:8000/api/location?type=neighbourhood&villageId=$id"));
+    final response = await http.get(Uri.parse("https://api.smartrtpp.xyz/api/location?type=neighbourhood&villageId=$id"));
     var listData = neighbourhoodFromJson(response.body);
     setState(() {
       _dataNeighbourhood = listData;      

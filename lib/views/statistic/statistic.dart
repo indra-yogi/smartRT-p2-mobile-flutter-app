@@ -16,8 +16,8 @@ class StatisticPageState extends State<StatisticPage> {
   List<Statistic> statisticData = [];
   List<Statistic> statisticDivorce = [];
 
-  Map<String, double> dataMap = {};
-  Map<String, double> divorceMap = {};
+  final Map<String, double> dataMap = {};
+  final Map<String, double> divorceMap = {};
 
   List<Color> colorList = [
     Colors.blueAccent,
@@ -90,7 +90,7 @@ class StatisticPageState extends State<StatisticPage> {
 
   Widget pieChartDivorce() {
     return PieChart(
-        dataMap: getChartDivorceMap(),
+        dataMap: getChartDataMap(),
         animationDuration: Duration(milliseconds: 800),
         chartLegendSpacing: 32,
         chartRadius: MediaQuery.of(context).size.width / 1.5,
