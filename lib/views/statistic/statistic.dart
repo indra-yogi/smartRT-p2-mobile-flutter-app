@@ -62,7 +62,6 @@ class StatisticPageState extends State<StatisticPage> {
 
   Widget pieChartMarital() {
     return PieChart(
-        key: ValueKey(key),
         dataMap: getChartDataMap(),
         animationDuration: Duration(milliseconds: 800),
         chartLegendSpacing: 32,
@@ -91,8 +90,7 @@ class StatisticPageState extends State<StatisticPage> {
 
   Widget pieChartDivorce() {
     return PieChart(
-        key: ValueKey(dKey),
-        dataMap: getChartDataMap(),
+        dataMap: getChartDivorceMap(),
         animationDuration: Duration(milliseconds: 800),
         chartLegendSpacing: 32,
         chartRadius: MediaQuery.of(context).size.width / 1.5,
