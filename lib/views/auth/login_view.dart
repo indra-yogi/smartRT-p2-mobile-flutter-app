@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:p2_mobile_app/controller/auth/login_controller.dart';
 import 'package:p2_mobile_app/views/auth/register_view.dart';
 import 'package:p2_mobile_app/views/home/home.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginPage extends StatefulWidget {
   @override

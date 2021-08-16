@@ -144,6 +144,7 @@ class StatisticPageState extends State<StatisticPage> {
                     fontWeight: FontWeight.bold
                   ),
                 ),
+                SizedBox(height: 16.0,),
                 pieChartMarital(context),
                 SizedBox(height: 16.0,),
                 SizedBox(
@@ -156,9 +157,10 @@ class StatisticPageState extends State<StatisticPage> {
                     fontWeight: FontWeight.bold
                   ),
                 ),
+                SizedBox(height: 16.0,),
                 pieChartDivorce(context),
                 SizedBox(
-                  height: 16.0,
+                  height: 50.0,
                 ),
               ],
             ),

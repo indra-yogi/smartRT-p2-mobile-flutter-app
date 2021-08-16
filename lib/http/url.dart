@@ -24,5 +24,5 @@ const urlGetDistrict = urlBase + 'location?type=district&cityId={id}';
 const urlGetCity = urlBase + 'location?type=city&provinceId={id}';
 const urlGetProvince = urlBase + 'location?type=province';
 //statistic url
-const urlMaritalChart = urlBase + 'statistic?type=CHART&chartType=MARITALS';
+const urlMaritalChart = urlBase + 'statistic?type=CHART&chartType=MARITAL';
 const urlDivorceChart = urlBase + 'statistic?type=CHART&chartType=DIVORCE';
