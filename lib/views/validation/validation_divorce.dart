@@ -30,101 +30,101 @@ class _ValidateDivorcePageState extends State<ValidateDivorcePage> {
       appBar: AppBar(
         title: Text("Validasi Data Perceraian"),
         centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_sharp), 
+          onPressed: () {Get.back();}
+        ),
         backgroundColor: Colors.blueAccent,
       ),
-      body: Obx(() {
-        if (_controller.isLoading.value) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        return InteractiveViewer(
+      body: InteractiveViewer(
           constrained: false,
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.only(top: 10),
-                width: 420.0,
-                child: TextField(
-                  controller: _searchController,
-                  decoration: InputDecoration(
-                    hintText: 'Search',
-                    icon: Icon(Icons.search_rounded),
-                    border: OutlineInputBorder(),
+          child: GetBuilder<DivorceController>(
+            init: DivorceController(),
+            builder:(_controller) => Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(top: 10),
+                  width: 420.0,
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      hintText: 'Search',
+                      icon: Icon(Icons.search_rounded),
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        _searchResult = value;
+                        filteredDivorce = _controller.divorceList.where((d) => 
+                          d.name.contains(_searchResult) || d.divorceNumber.contains(_searchResult)
+                        ).toList();
+                      });
+                    },
                   ),
-                  onChanged: (value) {
-                    setState(() {
-                      _searchResult = value;
-                      filteredDivorce = _controller.divorceList.where((d) => 
-                        d.name.contains(_searchResult) || d.divorceNumber.contains(_searchResult)
-                      ).toList();
-                    });
-                  },
                 ),
-              ),
-              DataTable(
-                columns: [
-                  DataColumn(
-                    label: Text(
-                      "Nama",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold
+                DataTable(
+                  columns: [
+                    DataColumn(
+                      label: Text(
+                        "Nama",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold
+                        ),
+                        )
                       ),
-                      )
-                    ),
-                  DataColumn(
-                    label: Text(
-                      "No. Akta Perceraian",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold
+                    DataColumn(
+                      label: Text(
+                        "No. Akta Perceraian",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold
+                        ),
+                        )
                       ),
-                      )
-                    ),
-                  DataColumn(
-                    label: Text(
-                      "Status",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold
+                    DataColumn(
+                      label: Text(
+                        "Status",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold
+                        ),
+                        )
                       ),
-                      )
-                    ),
-                  DataColumn(
-                    label: Text(
-                      "Action",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold
+                    DataColumn(
+                      label: Text(
+                        "Action",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold
+                        ),
+                        )
                       ),
-                      )
-                    ),
-                  
-                ], 
-                rows: List.generate(filteredDivorce.length, (index) {
-                  final x = filteredDivorce[index].name;
-                  final y = filteredDivorce[index].divorceNumber;
-                  final z = filteredDivorce[index].status.status;
+                    
+                  ], 
+                  rows: List.generate(filteredDivorce.length, (index) {
+                    final x = filteredDivorce[index].name;
+                    final y = filteredDivorce[index].divorceNumber;
+                    final z = filteredDivorce[index].status.status;
 
-                  return DataRow(
-                    color: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
-                        if (index % 2 == 0) {
-                          return Colors.blueGrey[100].withOpacity(0.3);
-                        } return null;
-                      }),
-                    cells: [
-                    DataCell(Container(child: Text(x),)),
-                    DataCell(Container(child: Text(y),)),
-                    DataCell(Container(child: Text(z),)),
-                    DataCell(
-                      InkWell(
-                        onTap: () {
-                          Get.to(() => ValidateDetailDivorcePage(filteredDivorce[index]));
-                        },child: Text("Detail"),)),
-                  ]);
-                }),
-                ),
-            ],
+                    return DataRow(
+                      color: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+                          if (index % 2 == 0) {
+                            return Colors.blueGrey[100].withOpacity(0.3);
+                          } return null;
+                        }),
+                      cells: [
+                      DataCell(Container(child: Text(x),)),
+                      DataCell(Container(child: Text(y),)),
+                      DataCell(Container(child: Text(z),)),
+                      DataCell(
+                        InkWell(
+                          onTap: () {
+                            Get.to(() => ValidateDetailDivorcePage(filteredDivorce[index]));
+                          },child: Text("Detail"),)),
+                    ]);
+                  }),
+                  ),
+              ],
+            ),
           ),
-        );
-      }),
-    );
+        )
+      );
   }
 }

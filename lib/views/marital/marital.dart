@@ -36,11 +36,15 @@ class _MaritalPageState extends State<MaritalPage> {
         title: Text("Data Perkawinan"),
         centerTitle: true,
         backgroundColor: Colors.blueAccent,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_sharp), 
+          onPressed: () {Get.back();}
+        ),
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 20.0),
             child: GestureDetector(
-              onTap: () {Get.to(() => AddDataMarital());},
+              onTap: () {Get.off(() => AddDataMarital());},
               child: Icon(
                 FontAwesomeIcons.plusCircle
               ),
@@ -48,97 +52,92 @@ class _MaritalPageState extends State<MaritalPage> {
           )
         ],
       ),
-      body: Obx(() {
-        if (_controller.isLoading.value) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        return InteractiveViewer(
-          
+      body: InteractiveViewer(
           constrained: false,
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.only(top: 10),
-                width: 420.0,
-                child: TextField(
-                  controller: _searchController,
-                  decoration: InputDecoration(
-                    hintText: 'Search',
-                    icon: Icon(Icons.search_rounded),
-                    border: OutlineInputBorder(),
+          child: GetBuilder<MaritalController>(
+            init: MaritalController(),
+            builder: (_controller) => Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.only(top: 10),
+                  width: 420.0,
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      hintText: 'Search',
+                      icon: Icon(Icons.search_rounded),
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        _searchResult = value;
+                        filteredMarital = _controller.maritalList.where((d) => 
+                          d.husbandName.contains(_searchResult) || d.maritalNumber.contains(_searchResult)
+                        ).toList();
+                      });
+                    },
                   ),
-                  onChanged: (value) {
-                    setState(() {
-                      _searchResult = value;
-                      filteredMarital = _controller.maritalList.where((d) => 
-                        d.husbandName.contains(_searchResult) || d.maritalNumber.contains(_searchResult)
-                      ).toList();
-                    });
-                  },
                 ),
-              ),
-              DataTable(
-                
-                  columns: [
-                    DataColumn(
-                      label: Text(
-                        "Name",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold
+                DataTable(
+                  
+                    columns: [
+                      DataColumn(
+                        label: Text(
+                          "Name",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold
+                          ),
+                          )
                         ),
-                        )
-                      ),
-                    DataColumn(
-                      label: Text(
-                        "No. Akta Perkawinan",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold
+                      DataColumn(
+                        label: Text(
+                          "No. Akta Perkawinan",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold
+                          ),
+                          )
                         ),
-                        )
-                      ),
-                    DataColumn(
-                      label: Text(
-                        "Status",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold
+                      DataColumn(
+                        label: Text(
+                          "Status",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold
+                          ),
+                          )
+                        ),  
+                      DataColumn(
+                        label: Text(
+                          "Action",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold
+                          ),
+                          )
                         ),
-                        )
-                      ),  
-                    DataColumn(
-                      label: Text(
-                        "Action",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold
-                        ),
-                        )
-                      ),
-                    
-                  ], 
-                  rows: List.generate(filteredMarital.length, (index) {
-                    final x = filteredMarital[index].husbandName;
-                    final y = filteredMarital[index].maritalNumber;
-                    final z = filteredMarital[index].status.status;
+                      
+                    ], 
+                    rows: List.generate(filteredMarital.length, (index) {
+                      final x = filteredMarital[index].husbandName;
+                      final y = filteredMarital[index].maritalNumber;
+                      final z = filteredMarital[index].status.status;
 
-                    return DataRow(
-                      color: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
-                        if (index % 2 == 0) {
-                          return Colors.blueGrey[100].withOpacity(0.3);
-                        } return null;
-                      }),
-                      cells: [
-                      DataCell(Container(child: Text(x),)),
-                      DataCell(Container(child: Text(y),)),
-                      DataCell(Container(child: Text(z),)),
-                      DataCell(Container(child: InkWell(onTap: () {Get.to(() => DetailMaritalPage(filteredMarital[index]),);}, child: Text("Detail"),),),),
-                    ]);
-                  }),
-              ),
-            ],
+                      return DataRow(
+                        color: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+                          if (index % 2 == 0) {
+                            return Colors.blueGrey[100].withOpacity(0.3);
+                          } return null;
+                        }),
+                        cells: [
+                        DataCell(Container(child: Text(x),)),
+                        DataCell(Container(child: Text(y),)),
+                        DataCell(Container(child: Text(z),)),
+                        DataCell(Container(child: InkWell(onTap: () {Get.to(() => DetailMaritalPage(filteredMarital[index]),);}, child: Text("Detail"),),),),
+                      ]);
+                    }),
+                ),
+              ],
+            ),
           ),
-        );
-      }),
-    );
+        )
+      );
   }
 }

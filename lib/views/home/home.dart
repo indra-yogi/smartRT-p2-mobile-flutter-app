@@ -97,7 +97,7 @@ class _HomeState extends State<Home> {
               child: InkWell(
                 onTap: () {
                   deleteToken();
-                  Get.offAll(() => LoginPage());
+                  Get.off(() => LoginPage());
                 },
                 child: Card(
                   child: Column(

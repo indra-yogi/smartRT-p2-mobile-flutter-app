@@ -13,8 +13,7 @@ import 'package:p2_mobile_app/model/location/village_model.dart';
 import 'package:p2_mobile_app/service/divorce_service.dart';
 import 'package:p2_mobile_app/service/user_service.dart';
 import 'package:http/http.dart' as http;
-//import 'package:p2_mobile_app/views/divorce/divorce.dart';
-import 'package:p2_mobile_app/views/home/home.dart';
+//import 'package:p2_mobile_app/views/home/home.dart';
 
 
 class AddDataDivorce extends StatefulWidget {
@@ -524,12 +523,12 @@ class _AddDataDivorceState extends State<AddDataDivorce> {
                       _valNeighbourhood, 
                       _image,
                     );
-                    Get.to(() => Home());
+                    Get.back();
                     setState(() {
                       SnackBar(
                         content: Text('Add Data Successful'),
                         duration: Duration(seconds: 2),
-                      );  
+                      ); 
                     });
                   } else {
                     setState(() {
